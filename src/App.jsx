@@ -30,14 +30,16 @@
 
 import React from 'react';
 import DownloadCVButton from './components/DownloadCVButton';
-import NavBar from './NavBar';
 
 function App() {
   return (
     <div>
       <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
         <ul className="flex justify-center space-x-4 p-4">
-         <NavBar/>
+          <li><a href="#home" className="text-blue-500 hover:text-blue-700">Home</a></li>
+          <li><a href="#about" className="text-blue-500 hover:text-blue-700">About</a></li>
+          <li><a href="#projects" className="text-blue-500 hover:text-blue-700">Projects</a></li>
+          <li><a href="#contact" className="text-blue-500 hover:text-blue-700">Contact</a></li>
         </ul>
       </nav>
 
