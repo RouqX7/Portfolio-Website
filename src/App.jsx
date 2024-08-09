@@ -1,60 +1,56 @@
-// import React from "react";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import NavBar from "./NavBar";
-// import About from "./pages/about";
-// import Skills from "./pages/skills";
-// import Services from "./pages/Services";
-// import Portfolio from "./pages/portfolio";
-// import Contact from "./pages/contact";
-// import Home from "./pages/Home";
-
-// function App() {
-//   return (
-//     <Router>
-//       <div className="App">
-//         <NavBar />
-//         <Routes>
-//           <Route path="/" element={<Home />} />
-//           <Route path="/about" element={<About />} />
-//           <Route path="/skills" element={<Skills />} />
-//           <Route path="/services" element={<Services />} />
-//           <Route path="/portfolio" element={<Portfolio />} />
-//           <Route path="/contact" element={<Contact />} />
-//         </Routes>
-//       </div>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
 import React from 'react';
+import NavBar from './NavBar';
+import ProfileCard from './components/ProfileCard';
+import InfoCard from './components/InfoCard';
 import DownloadCVButton from './components/DownloadCVButton';
+import SocialIcons from './components/SocialIcons';
+import ScrollDownIndicator from './components/ScrollDownIndicator';
+import HomeProfile from './components/HomeProfile';
+import About from './pages/about';
+import Services from './pages/Services';
+import Skills from './pages/skills';
 
 function App() {
   return (
     <div>
-      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
-        <ul className="flex justify-center space-x-4 p-4">
-          <li><a href="#home" className="text-blue-500 hover:text-blue-700">Home</a></li>
-          <li><a href="#about" className="text-blue-500 hover:text-blue-700">About</a></li>
-          <li><a href="#projects" className="text-blue-500 hover:text-blue-700">Projects</a></li>
-          <li><a href="#contact" className="text-blue-500 hover:text-blue-700">Contact</a></li>
-        </ul>
-      </nav>
-
-      <div id="home" className="section h-screen flex items-center justify-center">
-        <h1 className="text-4xl">Home Section</h1>
+      <NavBar />
+      <div id="home" className="section h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div className="flex flex-col md:flex-row items-center justify-center">
+          <div className="md:order-2 md:ml-8">
+            <HomeProfile />
+          </div>
+          <div className="md:order-1 md:mr-8">
+            <SocialIcons />
+          </div>
+        </div>
+        <ScrollDownIndicator />
       </div>
       <div id="about" className="section h-screen flex items-center justify-center bg-gray-100">
-        <h1 className="text-4xl">About Section</h1>
+        <div className="max-w-screen-lg mx-auto p-4">
+        <div className="md:order-2 md:ml-8">
+            <About/>
+          </div>
+        </div>
       </div>
-      <div id="projects" className="section h-screen flex items-center justify-center">
-        <h1 className="text-4xl">Projects Section</h1>
+      <div id="skills" className="section h-screen flex items-center justify-center">
+      <div className="max-w-screen-lg mx-auto p-4">
+        <div className="md:order-2 md:ml-8">
+        <Skills/>
+          </div>
+        </div>
+      </div>
+      <div id="services" className="section h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-screen-lg mx-auto p-4">
+        <div className="md:order-2 md:ml-8">
+        <Services/>
+          </div>
+        </div>
+      </div>
+      <div id="portfolio" className="section h-screen flex items-center justify-center">
+        <h1 className="text-4xl">Portfolio Section</h1>
       </div>
       <div id="contact" className="section h-screen flex items-center justify-center bg-gray-100">
         <h1 className="text-4xl">Contact Section</h1>
-        <DownloadCVButton />
       </div>
     </div>
   );

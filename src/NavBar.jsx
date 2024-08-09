@@ -1,13 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
     <nav className="bg-white border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-900">Farouq</span>
-        </Link>
+        <a href="#home" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <span className="absolute left-0 text-2xl font-semibold whitespace-nowrap text-gray-900">Farouq</span>
+        </a>
         <button
           data-collapse-toggle="navbar-default"
           type="button"
@@ -19,53 +18,53 @@ function NavBar() {
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-white md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
             <li>
-              <Link
-                to="/"
+              <a
+                href="#home"
                 className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
                 aria-current="page"
               >
                 Home
-              </Link>
+              </a>
             </li>
             <li>
-              <Link
-                to="/about"
+              <a
+                href="#about"
                 className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
               >
                 About
-              </Link>
+              </a>
             </li>
             <li>
-              <Link
-                to="/skills"
+              <a
+                href="#skills"
                 className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
               >
                 Skills
-              </Link>
+              </a>
             </li>
             <li>
-              <Link
-                to="/services"
+              <a
+                href="#services"
                 className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
               >
                 Services
-              </Link>
+              </a>
             </li>
             <li>
-              <Link
-                to="/portfolio"
+              <a
+                href="#portfolio"
                 className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
               >
                 Portfolio
-              </Link>
+              </a>
             </li>
             <li>
-              <Link
-                to="/contact"
+              <a
+                href="#contact"
                 className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
               >
                 Contact
-              </Link>
+              </a>
             </li>
           </ul>
         </div>
