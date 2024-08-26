@@ -2,10 +2,10 @@ import React from "react";
 
 function NavBar() {
   return (
-    <nav className="bg-white border-gray-200">
+    <nav className="bg-white sticky top-0 z-50 border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="#home" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="absolute left-0 text-2xl font-semibold whitespace-nowrap text-gray-900">Farouq</span>
+          <span className="absolute left-0 text-2xl ml-16 font-poppins whitespace-nowrap text-gray-900">Farouq</span>
         </a>
         <button
           data-collapse-toggle="navbar-default"

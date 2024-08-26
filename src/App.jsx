@@ -15,7 +15,7 @@ function App() {
   return (
     <div>
       <NavBar />
-      <div id="home" className="section h-screen flex flex-col items-center justify-center bg-gray-100">
+      <div id="home" className="section h-screen flex flex-col items-center justify-center bg-gray-50">
         <div className="flex flex-col md:flex-row items-center justify-center">
           <div className="md:order-2 md:ml-8">
             <HomeProfile />
@@ -33,7 +33,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div id="skills" className="section h-screen flex items-center justify-center">
+      <div id="skills" className="section h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
         <Skills/>
@@ -47,7 +47,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div id="portfolio" className="section h-screen flex items-center justify-center">
+      <div id="portfolio" className="section h-screen flex items-center justify-center bg-gray-50">
       <div className="md:order-2 md:ml-8">
         <Portfolio/>
           </div>
