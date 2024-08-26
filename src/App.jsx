@@ -9,6 +9,7 @@ import HomeProfile from './components/HomeProfile';
 import About from './pages/about';
 import Services from './pages/Services';
 import Skills from './pages/skills';
+import Portfolio from './pages/portfolio';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         </div>
         <ScrollDownIndicator />
       </div>
-      <div id="about" className="section h-screen flex items-center justify-center bg-gray-100">
+      <div id="about" className="section h-screen flex items-center justify-center bg-gray-50">
         <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
             <About/>
@@ -39,7 +40,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div id="services" className="section h-screen flex items-center justify-center bg-gray-100">
+      <div id="services" className="section h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
         <Services/>
@@ -47,9 +48,11 @@ function App() {
         </div>
       </div>
       <div id="portfolio" className="section h-screen flex items-center justify-center">
-        <h1 className="text-4xl">Portfolio Section</h1>
+      <div className="md:order-2 md:ml-8">
+        <Portfolio/>
+          </div>
       </div>
-      <div id="contact" className="section h-screen flex items-center justify-center bg-gray-100">
+      <div id="contact" className="section h-screen flex items-center justify-center bg-gray-50">
         <h1 className="text-4xl">Contact Section</h1>
       </div>
     </div>
