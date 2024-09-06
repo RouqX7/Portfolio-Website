@@ -59,10 +59,20 @@ function Services() {
           {/* Third Service Box */}
           <div className='bg-white h-64 w-48 rounded-md shadow-md'>
             <div className='flex flex-col p-4'>
-              <FaReact className='text-gray-500 text-3xl mt-24 ml-0' />
-              <p className='mt-4 text-left text-gray-800'>React Development</p>
+              <MdOutlineWeb className='text-gray-500 text-3xl mt-24 ml-0' />
+              <p className='mt-4 text-left text-gray-800'>Backend Developer</p>
+              <div className='flex flex-row mt-2 h-auto w-auto'>
+                <button
+                  onClick={() => handleOpenModal('Backend Developer', 'Build scalable server-side applications', 'I specialize in creating robust backend solutions.')}
+                  className='text-left text-gray-500'
+                >
+                  View more
+                </button>
+                <FaLongArrowAltRight className='mt-1 ml-1 text-gray-400 ' />
+              </div>
             </div>
           </div>
+          
         </div>
       </div>
 

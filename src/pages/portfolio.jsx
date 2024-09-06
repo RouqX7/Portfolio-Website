@@ -1,17 +1,48 @@
 import React, { useState } from 'react';
 import ProjectCard from '../components/ProjectCard';
-
+import PortfolioModal from '../components/PortfolioModal';
 function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
 
   // Define categories
   const categories = ['All', 'Web', 'App', 'Design'];
 
   // Sample projects data
   const projects = [
-    { id: 1, imageSrc: '/path/to/image1.jpg', title: 'App movil', demoText: 'Demo →', category: 'App' },
-    { id: 2, imageSrc: '/path/to/image2.jpg', title: 'Web Project', demoText: 'Demo →', category: 'Web' },
-    { id: 3, imageSrc: '/path/to/image3.jpg', title: 'Design Concept', demoText: 'Demo →', category: 'Design' },
+    { 
+      id: 1, 
+      imageSrc: '/BedSyncStaffImage.png', 
+      title: 'Bed Sync Staff', 
+      demoText: 'Demo →', 
+      category: 'Web',
+      description: 'A web application for managing staff schedules in hospitals.',
+      technologies: 'Html 5, Css 3, Javascript',
+      liveLink: 'https://example.com',
+      githubLink: 'https://github.com/example',
+    },
+    { 
+      id: 2, 
+      imageSrc: '/path/to/image2.jpg', 
+      title: 'Web Project', 
+      demoText: 'Demo →', 
+      category: 'Web',
+      description: 'An e-commerce platform built with React.',
+      technologies: 'React, Node.js, MongoDB',
+      liveLink: 'https://example2.com',
+      githubLink: 'https://github.com/example2',
+    },
+    { 
+      id: 3, 
+      imageSrc: '/path/to/image3.jpg', 
+      title: 'Design Concept', 
+      demoText: 'Demo →', 
+      category: 'Design',
+      description: 'A modern website design concept.',
+      technologies: 'Figma, Adobe XD',
+      liveLink: 'https://example3.com',
+      githubLink: 'https://github.com/example3',
+    },
     // Add more projects as needed
   ];
 
@@ -19,6 +50,16 @@ function Portfolio() {
   const filteredProjects = selectedCategory === 'All' 
     ? projects 
     : projects.filter(project => project.category === selectedCategory);
+
+  // Handle project card click
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setSelectedProject(null);
+  };
 
   return (
     <div className='min-h-screen flex flex-col p-8'> 
@@ -52,10 +93,19 @@ function Portfolio() {
             imageSrc={project.imageSrc} 
             title={project.title} 
             demoText={project.demoText} 
-            category={project.category} 
+            onClick={() => handleProjectClick(project)}
           />
         ))}
       </div>
+
+      {/* Modal */}
+      {selectedProject && (
+        <PortfolioModal 
+          isOpen={!!selectedProject} 
+          onClose={closeModal} 
+          project={selectedProject} 
+        />
+      )}
     </div>
   );
 }

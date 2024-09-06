@@ -12,7 +12,7 @@ function Skills() {
       <div className="flex-grow flex justify-center items-center">
         <div className="flex flex-row space-x-32">
           {/* First Skill Box */}
-          <div className=" h-96 w-72 rounded-md shadow-md p-4">
+          <div className=" h-96 w-72 rounded-md shadow-md p-4 bg-white">
             <div className="text-center text-xl mt-2">Frontend Developer</div>
 
             <div className="h-5/6 mt-7 w-full flex justify-between px-4">

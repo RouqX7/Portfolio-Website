@@ -10,6 +10,7 @@ import About from './pages/about';
 import Services from './pages/Services';
 import Skills from './pages/skills';
 import Portfolio from './pages/portfolio';
+import Resume from './pages/Resume';
 
 function App() {
   return (
@@ -33,13 +34,20 @@ function App() {
           </div>
         </div>
       </div>
-      <div id="skills" className="section h-screen flex items-center justify-center bg-gray-50">
+      <div id="resume" className="section h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-screen-lg mx-auto p-4">
+        <div className="md:order-2 md:ml-8">
+        <Resume/>
+          </div>
+        </div>
+      </div>
+      {/* <div id="skills" className="section h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
         <Skills/>
           </div>
         </div>
-      </div>
+      </div> */}
       <div id="services" className="section h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
