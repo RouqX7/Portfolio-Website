@@ -37,6 +37,14 @@ function Resume() {
         config: { tension: 120, friction: 14 },
     });
 
+    // Trail for the "Resume" and "Most Recent work" text
+    const textTrail = useTrail(2, {
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(20px)',
+        from: { opacity: 0, transform: 'translateY(20px)' },
+        config: { tension: 120, friction: 14 },
+    });
+
     // Set the content to be animated using trail, but ensure useTrail is always called
     const data = selectedCategory === 'Experience'
         ? experienceData
@@ -56,12 +64,22 @@ function Resume() {
 
     return (
         <div className='min-h-screen flex flex-col font-poppins'>
-            <h1 className='text-4xl font-bold text-gray-800 text-center '>Resume</h1>
-            <h2 className='text-md mt-2 text-gray-600 text-center'>Most Recent work</h2>
+            {/* Text Section for Resume and Most Recent Work */}
+            <div ref={ref}>
+                {textTrail.map((style, index) => (
+                    <animated.div key={index} style={style} className='text-center'>
+                        {index === 0 ? (
+                            <h1 className='text-4xl font-bold text-gray-800'>Resume</h1>
+                        ) : (
+                            <h2 className='text-md mt-2 text-gray-600'>Most Recent work</h2>
+                        )}
+                    </animated.div>
+                ))}
+            </div>
 
             <div className='mt-10 flex flex-col md:flex-row p-0 md:p-8 text-white'>
                 {/* Categories on the left side */}
-                <div ref={ref} className='flex flex-col space-y-4 md:w-1/4 text-center md:min-w-max md:ml-0 p-4'>
+                <div className='flex flex-col space-y-4 md:w-1/4 text-center md:min-w-max md:ml-0 p-4'>
                     {trailCategories.map((style, index) => (
                         <animated.div
                             key={categories[index]}
