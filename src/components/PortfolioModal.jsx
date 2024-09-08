@@ -8,7 +8,8 @@ function PortfolioModal({ isOpen, onClose, project }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-4xl sm:w-full flex flex-col h-auto">
+      {/* Modal content */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-4xl sm:w-full flex flex-col h-auto relative z-50">
         
         {/* Check if we're in video mode */}
         {!videoMode ? (
@@ -64,7 +65,6 @@ function PortfolioModal({ isOpen, onClose, project }) {
             </button>
           </div>
         )}
-
       </div>
 
       {/* Close button for modal */}

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
+import { useTrail, animated } from 'react-spring';
+import { useInView } from 'react-intersection-observer'; // Import Intersection Observer
 import ProjectCard from '../components/ProjectCard';
 import PortfolioModal from '../components/PortfolioModal';
-import { useSpring,animated } from 'react-spring';
+
 function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
-
-  const fade = useSpring({
-    opacity:setSelectedCategory ? 1:0
-  })
 
   const categories = ['All', 'Web', 'App', 'Design'];
 
@@ -63,40 +61,81 @@ function Portfolio() {
     setSelectedProject(null);
   };
 
+  // Intersection Observer to trigger animations for heading and projects when they are in view
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.3, // Trigger when 30% of the section is in view
+  });
+
+  // Elements to animate using trail
+  const trailItems = [
+    <h1 key="heading" className='text-4xl font-bold text-gray-800 text-center'>Portfolio</h1>,
+    <h2 key="subheading" className='text-md mt-2 text-gray-600 text-center'>Most Recent Work</h2>,
+  ];
+
+  // Trail animation for the heading and subheading
+  const trailText = useTrail(trailItems.length, {
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0)' : 'translateY(20px)',
+    config: { tension: 100, friction: 80 },
+  });
+
+  // Trail animation for category buttons
+  const trailCategories = useTrail(categories.length, {
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0)' : 'translateY(20px)',
+    config: { tension: 150, friction: 50 },
+  });
+
+  // Trail animation for project cards
+  const trailCards = useTrail(filteredProjects.length, {
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0)' : 'translateY(20px)',
+    config: { tension: 100, friction: 60 },
+  });
+
   return (
     <div className='min-h-screen flex flex-col p-8'> 
-      <h1 className='text-4xl font-bold text-gray-800 text-center'>Portfolio</h1>
-      <h2 className='text-md mt-2 text-gray-600 text-center'>Most Recent work</h2>
+      {/* Portfolio Heading and Subheading */}
+      <div ref={ref}>
+        {trailText.map((style, index) => (
+          <animated.div key={index} style={style}>
+            {trailItems[index]}
+          </animated.div>
+        ))}
+      </div>
 
       {/* Container for the category buttons */}
       <div className='flex justify-center mt-10'>
         <div className='flex space-x-4'>
-          {categories.map(category => (
-            <div
-              key={category}
+          {trailCategories.map((style, index) => (
+            <animated.div
+              key={categories[index]}
+              style={style}
               className={`cursor-pointer shadow-sm px-4 py-2 rounded-md transition duration-300 ${
-                selectedCategory === category
+                selectedCategory === categories[index]
                   ? 'bg-black text-white'
                   : 'bg-gray-100 hover:bg-black hover:text-white'
               }`}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => setSelectedCategory(categories[index])}
             >
-              <h1>{category}</h1>
-            </div>
+              <h1>{categories[index]}</h1>
+            </animated.div>
           ))}
         </div>
       </div>
 
       {/* Project cards displayed based on selected category */}
       <div className='mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {filteredProjects.map(project => (
-          <ProjectCard 
-            key={project.id}
-            imageSrc={project.imageSrc} 
-            title={project.title} 
-            demoText={project.demoText} 
-            onClick={() => handleProjectClick(project)}
-          />
+        {trailCards.map((style, index) => (
+          <animated.div key={filteredProjects[index].id} style={style}>
+            <ProjectCard 
+              imageSrc={filteredProjects[index].imageSrc} 
+              title={filteredProjects[index].title} 
+              demoText={filteredProjects[index].demoText} 
+              onClick={() => handleProjectClick(filteredProjects[index])}
+            />
+          </animated.div>
         ))}
       </div>
 
