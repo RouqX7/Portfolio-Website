@@ -16,7 +16,7 @@ function App() {
   return (
     <div>
       <NavBar />
-      <div id="home" className="section h-screen flex flex-col items-center justify-center bg-gray-50">
+      <div id="home" className="section h-screen flex flex-col items-center justify-center bg-white ">
         <div className="flex flex-col md:flex-row items-center justify-center">
           <div className="md:order-2 md:ml-8">
             <HomeProfile />
@@ -27,40 +27,40 @@ function App() {
         </div>
         <ScrollDownIndicator />
       </div>
-      <div id="about" className="section h-screen flex items-center justify-center bg-gray-50">
+      <div id="about" className="section h-screen flex items-center justify-center bg-white ">
         <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
             <About/>
           </div>
         </div>
       </div>
-      <div id="resume" className="section h-screen flex items-center justify-center bg-gray-50">
+      <div id="portfolio" className="section h-screen flex items-center justify-center bg-white ">
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
-        <Resume/>
+        <Portfolio/>
           </div>
         </div>
       </div>
-      {/* <div id="skills" className="section h-screen flex items-center justify-center bg-gray-50">
+      {/* <div id="skills" className="section h-screen flex items-center justify-center bg-white ">
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
         <Skills/>
           </div>
         </div>
       </div> */}
-      <div id="services" className="section h-screen flex items-center justify-center bg-gray-50">
+      <div id="resume" className="section h-screen flex items-center justify-center bg-white ">
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="md:order-2 md:ml-8">
-        <Services/>
+        <Resume/>
           </div>
         </div>
       </div>
-      <div id="portfolio" className="section h-screen flex items-center justify-center bg-gray-50">
+      <div id="services" className="section h-screen flex items-center justify-center bg-white ">
       <div className="md:order-2 md:ml-8">
-        <Portfolio/>
+        <Services/>
           </div>
       </div>
-      <div id="contact" className="section h-screen flex items-center justify-center bg-gray-50">
+      <div id="contact" className="section h-screen flex items-center justify-center bg-white ">
         <h1 className="text-4xl">Contact Section</h1>
       </div>
     </div>

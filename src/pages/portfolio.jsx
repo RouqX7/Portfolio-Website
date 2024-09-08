@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import ProjectCard from '../components/ProjectCard';
 import PortfolioModal from '../components/PortfolioModal';
+import { useSpring,animated } from 'react-spring';
 function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // Define categories
+  const fade = useSpring({
+    opacity:setSelectedCategory ? 1:0
+  })
+
   const categories = ['All', 'Web', 'App', 'Design'];
 
-  // Sample projects data
   const projects = [
     { 
       id: 1, 
@@ -18,32 +21,31 @@ function Portfolio() {
       category: 'Web',
       description: 'A web application for managing staff schedules in hospitals.',
       technologies: 'Html 5, Css 3, Javascript',
-      liveLink: 'https://example.com',
-      githubLink: 'https://github.com/example',
+      liveLink: '/FantasyDemo.mp4', 
+      githubLink: 'https://github.com/RouqX7/Bed-Sync-Staff',
     },
     { 
       id: 2, 
-      imageSrc: '/path/to/image2.jpg', 
+      imageSrc: '/FantasyImage.png', 
       title: 'Web Project', 
       demoText: 'Demo →', 
       category: 'Web',
       description: 'An e-commerce platform built with React.',
       technologies: 'React, Node.js, MongoDB',
-      liveLink: 'https://example2.com',
-      githubLink: 'https://github.com/example2',
+      liveLink: '/FantasyDemo.mp4', 
+      githubLink: 'https://github.com/RouqX7/FantasySports',
     },
     { 
       id: 3, 
-      imageSrc: '/path/to/image3.jpg', 
+      imageSrc: 'BedSyncAdminImage.png', 
       title: 'Design Concept', 
       demoText: 'Demo →', 
       category: 'Design',
       description: 'A modern website design concept.',
       technologies: 'Figma, Adobe XD',
       liveLink: 'https://example3.com',
-      githubLink: 'https://github.com/example3',
+      githubLink: 'https://github.com/RouqX7/BedSync-Admin',
     },
-    // Add more projects as needed
   ];
 
   // Filter projects based on selected category
