@@ -46,9 +46,9 @@ function About() {
       {trailHeadings.map((style, index) => (
         <animated.div key={index} style={style} className="text-center">
           {index === 0 ? (
-            <div className="text-3xl">About me</div>
+            <div className="text-4xl font-bold font-poppins">About me</div>
           ) : (
-            <div className="text-sm">My Introduction</div>
+            <div className="text-sm font-poppins text-gray-600">My Introduction</div>
           )}
         </animated.div>
       ))}
@@ -69,7 +69,7 @@ function About() {
           </div>
 
           {/* The text box with trail animation */}
-          <div className="rounded-sm w-auto mt-8 p-4">
+          <div className="rounded-sm w-auto mt-8 p-4 font-poppins">
             {trailText.map((style, index) => (
               <animated.p key={index} style={style} className="text-gray-700 mt-2">
                 {textItems[index]}

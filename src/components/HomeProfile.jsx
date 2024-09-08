@@ -36,7 +36,7 @@ function HomeProfile() {
   });
 
   return (
-    <div className="text-center md:text-left mt-8 flex flex-col items-center md:items-start">
+    <div className="text-center md:text-left mt-8 flex flex-col items-center md:items-start font-poppins">
       {/* Profile Image with Hover Effect */}
       <animated.div
         style={imageProps}

@@ -17,8 +17,8 @@ function PortfolioModal({ isOpen, onClose, project }) {
             {/* Half-and-Half Layout */}
             <div className="flex flex-1">
               {/* Left Side - Project Details */}
-              <div className="p-6 flex-1">
-                <h2 className="text-4xl font-bold text-black mb-2">{project.title}</h2>
+              <div className="p-6 flex-1 font-poppins">
+                <h2 className="text-4xl font-bold text-black mb-2 ">{project.title}</h2>
                 <p className="text-gray-400 mb-4">
                   {project.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
                 </p>

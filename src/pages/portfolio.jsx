@@ -25,7 +25,7 @@ function Portfolio() {
     { 
       id: 2, 
       imageSrc: '/FantasyImage.png', 
-      title: 'Web Project', 
+      title: 'FantasySports', 
       demoText: 'Demo →', 
       category: 'Web',
       description: 'An e-commerce platform built with React.',
@@ -36,7 +36,7 @@ function Portfolio() {
     { 
       id: 3, 
       imageSrc: 'BedSyncAdminImage.png', 
-      title: 'Design Concept', 
+      title: 'Bed Sync Admin', 
       demoText: 'Demo →', 
       category: 'Design',
       description: 'A modern website design concept.',
@@ -69,8 +69,8 @@ function Portfolio() {
 
   // Elements to animate using trail
   const trailItems = [
-    <h1 key="heading" className='text-4xl font-bold text-gray-800 text-center'>Portfolio</h1>,
-    <h2 key="subheading" className='text-md mt-2 text-gray-600 text-center'>Most Recent Work</h2>,
+    <h1 key="heading" className='text-4xl font-bold text-gray-800 text-center font-poppins'>Portfolio</h1>,
+    <h2 key="subheading" className='text-md mt-2 text-gray-600 text-center font-poppins'>Most Recent Work</h2>,
   ];
 
   // Trail animation for the heading and subheading
@@ -106,7 +106,7 @@ function Portfolio() {
       </div>
 
       {/* Container for the category buttons */}
-      <div className='flex justify-center mt-10'>
+      <div className='flex justify-center mt-10 font-poppins'>
         <div className='flex space-x-4'>
           {trailCategories.map((style, index) => (
             <animated.div

@@ -14,7 +14,7 @@ function Services() {
   };
 
   return (
-    <div className='min-h-screen flex flex-col p-8'>
+    <div className='min-h-screen flex flex-col p-8 font-poppins'>
       {/* Title Section */}
       <h1 className='text-4xl font-bold text-gray-800 text-center'>Services</h1>
       <h2 className='text-md mt-2 text-gray-600 text-center'>What I offer</h2>
