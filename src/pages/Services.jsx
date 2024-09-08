@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaReact, FaLongArrowAltRight } from 'react-icons/fa';
+import {  FaLongArrowAltRight } from 'react-icons/fa';
 import { MdOutlineWeb } from "react-icons/md";
 import { useTrail, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer'; // Import Intersection Observer

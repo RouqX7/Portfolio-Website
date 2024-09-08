@@ -34,7 +34,7 @@ function Resume() {
         opacity: inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : 'translateY(20px)',
         from: { opacity: 0, transform: 'translateY(20px)' },
-        config: { tension: 120, friction: 14 },
+        config: { tension: 80, friction: 40 },
     });
 
     // Trail for the "Resume" and "Most Recent work" text
@@ -42,7 +42,7 @@ function Resume() {
         opacity: inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : 'translateY(20px)',
         from: { opacity: 0, transform: 'translateY(20px)' },
-        config: { tension: 120, friction: 14 },
+        config: { tension: 80, friction: 40 },
     });
 
     // Set the content to be animated using trail, but ensure useTrail is always called
