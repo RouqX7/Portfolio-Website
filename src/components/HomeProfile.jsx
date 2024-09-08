@@ -32,7 +32,7 @@ function HomeProfile() {
   // Hover animation for the profile image using useSpring
   const imageProps = useSpring({
     transform: hovered ? 'scale(1.1)' : 'scale(1)',
-    config: { tension: 300, friction: 15 },
+    config: {mass: 5, tension: 100, friction: 80 },
   });
 
   return (
