@@ -7,9 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-dist
-dist-ssr
+
+# Build output
+/dist
+/build
+/dist-ssr
+firebase-debug.log
+
+# Local env files
 *.local
 
 # Editor directories and files
@@ -22,3 +29,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Specific project files 
+firebase.jsx
+
+# Environment Variables
+.env
+.env.local
+.env.production
+.env.development
+
+

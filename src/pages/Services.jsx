@@ -11,15 +11,44 @@ function Services() {
 
   // Service data for trail animation
   const services = [
-    { title: 'Full Stack Developer', summary: 'Build full stack web applications', description: 'I offer expertise in both frontend and backend development.' },
-    { title: 'Backend Developer', summary: 'Build scalable server-side applications', description: 'I specialize in creating robust backend solutions.' },
-    { title: 'Backend Developer', summary: 'Build scalable server-side applications', description: 'I specialize in creating robust backend solutions.' },
+    {
+      title: 'Full Stack Developer',
+      summaryItems: [
+        'Develop both frontend and backend components.',
+        'Create RESTful APIs and integrate with databases.',
+        'Ensure responsive design and cross-browser compatibility.',
+        'Deploy applications on cloud infrastructure.'
+      ],
+      description: 'I offer expertise in both frontend and backend development.'
+    },
+    {
+      title: 'Backend Developer',
+      summaryItems: [
+        'Design and implement scalable server-side applications.',
+        'Build and maintain databases.',
+        'Ensure security and data protection.',
+        'Optimize backend performance and scalability.'
+      ],
+      description: 'I specialize in creating robust backend solutions.'
+    },
+    {
+      title: 'Frontend Developer',
+      summaryItems: [
+        'Create responsive and accessible user interfaces.',
+        'Ensure cross-browser compatibility.',
+        'Optimize web performance for faster load times.',
+        'Collaborate with backend developers for seamless integration.'
+      ],
+      description: 'I focus on creating visually appealing and functional web interfaces.'
+    }
   ];
+  
 
-  const handleOpenModal = (title, summary, description) => {
-    setModalData({ title, summary, description });
+  const handleOpenModal = (title, summaryItems, description) => {
+    setModalData({ title, summaryItems, description });
     setShowModal(true);
   };
+  
 
   // Intersection Observer for the text and service boxes
   const [textRef, textInView] = useInView({
@@ -65,25 +94,26 @@ function Services() {
 
       {/* Container for Service Boxes */}
       <div ref={ref} className='flex-grow flex justify-center items-center'>
-        <div className='flex flex-row space-x-14'>
-          {trail.map((style, index) => (
-            <animated.div key={index} style={style} className='bg-white h-64 w-48 rounded-md shadow-md'>
-              <div className='flex flex-col p-4'>
-                <MdOutlineWeb className='text-gray-500 text-3xl mt-24 ml-0' />
-                <p className='mt-4 text-left text-gray-800'>{services[index].title}</p>
-                <div className='flex flex-row mt-2 h-auto w-auto'>
-                  <button
-                    onClick={() => handleOpenModal(services[index].title, services[index].summary, services[index].description)}
-                    className='text-left text-gray-500'
-                  >
-                    View more
-                  </button>
-                  <FaLongArrowAltRight className='mt-1 ml-1 text-gray-400 ' />
-                </div>
-              </div>
-            </animated.div>
-          ))}
+      <div className='flex flex-row space-x-14'>
+  {trail.map((style, index) => (
+    <animated.div key={index} style={style} className='bg-white h-64 w-48 rounded-md shadow-md'>
+      <div className='flex flex-col p-4'>
+        <MdOutlineWeb className='text-gray-500 text-3xl mt-24 ml-0' />
+        <p className='mt-4 text-left text-gray-800'>{services[index].title}</p>
+        <div className='flex flex-row mt-2 h-auto w-auto'>
+          <button
+            onClick={() => handleOpenModal(services[index].title, services[index].summaryItems, services[index].description)}
+            className='text-left text-gray-500'
+          >
+            View more
+          </button>
+          <FaLongArrowAltRight className='mt-1 ml-1 text-gray-400 ' />
         </div>
+      </div>
+    </animated.div>
+  ))}
+</div>
+
       </div>
 
       {/* Modal */}

@@ -33,23 +33,7 @@ function NavBar() {
               >
                 About
               </a>
-            </li>
-            <li>
-              <a
-                href="#resume"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
-              >
-                Resume
-              </a>
-            </li>
-            <li>
-              <a
-                href="#services"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
-              >
-                Services
-              </a>
-            </li>
+            </li> 
             <li>
               <a
                 href="#portfolio"
@@ -58,6 +42,24 @@ function NavBar() {
                 Portfolio
               </a>
             </li>
+            <li>
+              <a
+                href="#resume"
+                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+              >
+                Resume
+              </a>
+            </li> 
+           
+            <li>
+              <a
+                href="#services"
+                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+              >
+                Services
+              </a>
+            </li>
+           
             <li>
               <a
                 href="#contact"

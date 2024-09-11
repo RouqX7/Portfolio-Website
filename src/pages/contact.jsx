@@ -19,10 +19,15 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     // Use EmailJS to send email with Public Key and Template ID
     emailjs
-      .sendForm('servicekey', 'templateid', e.target, 'publicKey')
+      .sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        e.target,
+        import.meta.env.VITE_EMAILJS_USER_ID
+      )
       .then(
         (result) => {
           console.log(result.text);
@@ -32,7 +37,7 @@ function Contact() {
           console.log(error.text);
         }
       );
-
+  
     // Reset form
     setFormData({
       name: '',
@@ -40,6 +45,7 @@ function Contact() {
       message: '',
     });
   };
+  
 
   // Contact data for useTrail
   const contactData = [
@@ -107,11 +113,11 @@ function Contact() {
                     <label className='block text-gray-700'>Name</label>
                     <input
                       type='text'
-                      name='from_name'  
+                      name='name'  
                       value={formData.name}
                       onChange={handleChange}
                       placeholder='Insert your name'
-                      className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600'
+                      className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600 text-gray-900' 
                       required
                     />
                   </div>
@@ -124,7 +130,7 @@ function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder='Insert your email'
-                      className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600'
+                      className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600 text-gray-900' 
                       required
                     />
                   </div>
@@ -136,7 +142,7 @@ function Contact() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder='Write your project'
-                      className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600'
+                      className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600 text-gray-900' 
                       rows='4'
                       required
                     />
