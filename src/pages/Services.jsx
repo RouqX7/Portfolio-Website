@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {  FaLongArrowAltRight } from 'react-icons/fa';
-import { MdOutlineWeb } from "react-icons/md";
+import { FaLongArrowAltRight } from 'react-icons/fa';
+import { MdOutlineWeb } from 'react-icons/md';
 import { useTrail, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer'; // Import Intersection Observer
 import ServicesModal from '../components/ServicesModal';
@@ -43,12 +43,10 @@ function Services() {
     }
   ];
   
-
   const handleOpenModal = (title, summaryItems, description) => {
     setModalData({ title, summaryItems, description });
     setShowModal(true);
   };
-  
 
   // Intersection Observer for the text and service boxes
   const [textRef, textInView] = useInView({
@@ -94,26 +92,26 @@ function Services() {
 
       {/* Container for Service Boxes */}
       <div ref={ref} className='flex-grow flex justify-center items-center'>
-      <div className='flex flex-row space-x-14'>
-  {trail.map((style, index) => (
-    <animated.div key={index} style={style} className='bg-white h-64 w-48 rounded-md shadow-md'>
-      <div className='flex flex-col p-4'>
-        <MdOutlineWeb className='text-gray-500 text-3xl mt-24 ml-0' />
-        <p className='mt-4 text-left text-gray-800'>{services[index].title}</p>
-        <div className='flex flex-row mt-2 h-auto w-auto'>
-          <button
-            onClick={() => handleOpenModal(services[index].title, services[index].summaryItems, services[index].description)}
-            className='text-left text-gray-500'
-          >
-            View more
-          </button>
-          <FaLongArrowAltRight className='mt-1 ml-1 text-gray-400 ' />
+        {/* Responsive Flexbox Layout */}
+        <div className='flex flex-col sm:flex-row sm:space-x-14 space-y-6 sm:space-y-0'>
+          {trail.map((style, index) => (
+            <animated.div key={index} style={style} className='bg-white h-64 w-full sm:w-48 rounded-md shadow-md'>
+              <div className='flex flex-col p-4'>
+                <MdOutlineWeb className='text-gray-500 text-3xl mt-24 ml-0' />
+                <p className='mt-4 text-left text-gray-800'>{services[index].title}</p>
+                <div className='flex flex-row mt-2 h-auto w-auto'>
+                  <button
+                    onClick={() => handleOpenModal(services[index].title, services[index].summaryItems, services[index].description)}
+                    className='text-left text-gray-500'
+                  >
+                    View more
+                  </button>
+                  <FaLongArrowAltRight className='mt-1 ml-1 text-gray-400 ' />
+                </div>
+              </div>
+            </animated.div>
+          ))}
         </div>
-      </div>
-    </animated.div>
-  ))}
-</div>
-
       </div>
 
       {/* Modal */}
