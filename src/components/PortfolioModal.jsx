@@ -7,18 +7,18 @@ function PortfolioModal({ isOpen, onClose, project }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur-sm bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur-sm bg-opacity-50 p-4">
       {/* Modal content */}
-      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-4xl sm:w-full flex flex-col h-auto relative z-50">
+      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-4xl w-full flex flex-col h-auto relative z-50">
         
         {/* Check if we're in video mode */}
         {!videoMode ? (
           <>
-            {/* Half-and-Half Layout */}
-            <div className="flex flex-1">
+            {/* Responsive Half-and-Half Layout */}
+            <div className="flex flex-col md:flex-row">
               {/* Left Side - Project Details */}
               <div className="p-6 flex-1 font-poppins">
-                <h2 className="text-4xl font-bold text-black mb-2 ">{project.title}</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-black mb-2">{project.title}</h2>
                 <p className="text-gray-400 mb-4">
                   {project.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
                 </p>
@@ -35,7 +35,12 @@ function PortfolioModal({ isOpen, onClose, project }) {
                   </button>
 
                   {/* GitHub Link */}
-                  <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center bg-gray-700 hover:bg-gray-600 transition duration-300 text-white rounded-full p-3">
+                  <a
+                    href={project.githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center bg-gray-700 hover:bg-gray-600 transition duration-300 text-white rounded-full p-3"
+                  >
                     <FaGithub />
                   </a>
                 </div>
@@ -43,7 +48,11 @@ function PortfolioModal({ isOpen, onClose, project }) {
 
               {/* Right Side - Image */}
               <div className="flex-1">
-                <img src={project.imageSrc} alt={project.title} className="w-full h-full " />
+                <img
+                  src={project.imageSrc}
+                  alt={project.title}
+                  className="w-full h-64 md:h-full object-cover"
+                />
               </div>
             </div>
           </>

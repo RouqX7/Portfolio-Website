@@ -45,7 +45,6 @@ function Contact() {
       message: '',
     });
   };
-  
 
   // Contact data for useTrail
   const contactData = [
@@ -82,14 +81,15 @@ function Contact() {
   });
 
   return (
-    <div className='min-h-screen flex flex-col justify-center items-center p-8 font-poppins'>
+    <div className='min-h-screen flex flex-col justify-center items-center p-4 sm:p-8 font-poppins'>
       <div className='text-center mb-12'>
         <h1 className='text-4xl font-bold text-gray-800'>Talk to me</h1>
       </div>
 
-      <div className='flex space-x-10'>
+      {/* Responsive flex container */}
+      <div className='flex flex-col md:flex-row justify-center md:space-x-10 space-y-8 md:space-y-0'>
         {/* Contact Cards */}
-        <div ref={cardsRef} className='flex flex-col space-y-6'>
+        <div ref={cardsRef} className='flex flex-col md:flex-row md:space-x-10 space-y-6 md:space-y-0'>
           {trailCards.map((style, index) => (
             <animated.div key={index} style={style}>
               <ContactCard
@@ -103,7 +103,7 @@ function Contact() {
         </div>
 
         {/* Contact Form */}
-        <animated.div ref={formRef} className='bg-white p-8 shadow-md rounded-lg w-96'>
+        <animated.div ref={formRef} className='bg-white p-6 sm:p-8 shadow-md rounded-lg w-full md:w-96'>
           <h2 className='text-2xl font-bold text-gray-800 mb-4'>Write me your project</h2>
           <form onSubmit={handleSubmit}>
             {trailForm.map((style, index) => (
