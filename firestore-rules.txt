@@ -1,0 +1,53 @@
+// Updated Firestore Security Rules for Admin System
+// Copy these rules to Firebase Console > Firestore Database > Rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow admins to read their own admin doc
+    match /admins/{adminId} {
+      allow read: if request.auth != null && request.auth.token.email == resource.data.email;
+      allow write: if false; // Only allow manual creation, no updates via client
+    }
+    
+    // Allow anyone to read projects (for your portfolio display)
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Everything else is admin-only
+    match /{document=**} {
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.isAdmin == true;
+    }
+  }
+}
+
+// Alternative simpler rules (if you prefer):
+/*
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow anyone to read projects
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Allow admins to read their own admin doc
+    match /admins/{adminId} {
+      allow read: if request.auth != null && request.auth.token.email == resource.data.email;
+      allow write: if false;
+    }
+    
+    // Everything else requires authentication
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+*/

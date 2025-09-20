@@ -93,6 +93,7 @@ function NavBar() {
                 Contact
               </a>
             </li>
+            
           </ul>
         </div>
       </div>
