@@ -40,6 +40,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
+    // CVs collection - anyone can read active CV, only admins can write
+    match /cvs/{cvId} {
+      allow read: if true;  // Public read for CV download button
+      allow write: if isAdmin();
+    }
+    
     // Everything else is admin-only
     match /{document=**} {
       allow read, write: if isAdmin();

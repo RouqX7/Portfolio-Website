@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { FaHome, FaProjectDiagram, FaFileAlt, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaProjectDiagram, FaFileAlt, FaFilePdf, FaCog, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -8,11 +8,13 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProjectsSection from '../components/admin/ProjectsSection';
 import ResumeSection from '../components/admin/ResumeSection';
+import CVSection from '../components/admin/CVSection';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('projects');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +58,8 @@ export default function AdminDashboard() {
         return <ProjectsSection />;
       case 'resume':
         return <ResumeSection />;
+      case 'cv':
+        return <CVSection />;
       case 'settings':
         return (
           <div className="p-6">
@@ -81,20 +85,64 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50">
       <ToastContainer position="top-right" autoClose={3000} />
       
-      {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900">Portfolio Admin</h1>
-          <p className="text-sm text-gray-600 mt-1">Welcome back!</p>
-        </div>
+      {/* Top Navigation Bar */}
+      <nav className="bg-white shadow-lg sticky top-0 z-40">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Left side - Menu button and title */}
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+              >
+                {sidebarOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+              </button>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Portfolio Admin
+              </h1>
+            </div>
 
-        {/* Navigation */}
-        <nav className="px-4 space-y-2">
+            {/* Right side - User info and sign out */}
+            <div className="flex items-center space-x-4">
+              <div className="hidden md:block text-right">
+                <p className="text-sm font-medium text-gray-900">{user.email}</p>
+                <p className="text-xs text-gray-500">Administrator</p>
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="flex items-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              >
+                <FaSignOutAlt />
+                <span className="hidden sm:inline">Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Collapsible Sidebar */}
+      <aside
+        className={`fixed top-16 left-0 bottom-0 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-30 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0 lg:static lg:top-0`}
+      >
+        <nav className="p-4 space-y-2">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => {
+              navigate('/');
+              setSidebarOpen(false);
+            }}
             className="w-full flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <FaHome />
@@ -102,10 +150,13 @@ export default function AdminDashboard() {
           </button>
           
           <button
-            onClick={() => setActiveSection('projects')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+            onClick={() => {
+              setActiveSection('projects');
+              setSidebarOpen(false);
+            }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeSection === 'projects'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -114,10 +165,13 @@ export default function AdminDashboard() {
           </button>
 
           <button
-            onClick={() => setActiveSection('resume')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+            onClick={() => {
+              setActiveSection('resume');
+              setSidebarOpen(false);
+            }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeSection === 'resume'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -126,10 +180,28 @@ export default function AdminDashboard() {
           </button>
 
           <button
-            onClick={() => setActiveSection('settings')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+            onClick={() => {
+              setActiveSection('cv');
+              setSidebarOpen(false);
+            }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+              activeSection === 'cv'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <FaFilePdf />
+            <span>CV Upload</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveSection('settings');
+              setSidebarOpen(false);
+            }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeSection === 'settings'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -137,29 +209,10 @@ export default function AdminDashboard() {
             <span>Settings</span>
           </button>
         </nav>
-
-        {/* User Info & Sign Out */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-white">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
-                {user.email}
-              </p>
-              <p className="text-xs text-gray-500">Administrator</p>
-            </div>
-            <button
-              onClick={handleSignOut}
-              className="ml-2 text-red-600 hover:text-red-800 transition-colors"
-              title="Sign Out"
-            >
-              <FaSignOutAlt size={20} />
-            </button>
-          </div>
-        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="lg:ml-64 transition-all duration-300">
         {renderContent()}
       </main>
     </div>

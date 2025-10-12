@@ -6,14 +6,14 @@ import PortfolioModal from '../components/PortfolioModal';
 import { ProjectService } from '../services/projectService';
 
 function Portfolio() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('Featured');
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const projectsPerPage = 6; // Show 6 projects per page
 
-  const categories = ['All', 'Web', 'Mobile', 'Desktop', 'Backend', 'Other'];
+  const categories = ['Featured', 'All', 'Web', 'Mobile', 'Desktop', 'Backend', 'Other'];
 
   // Fetch projects from Firebase
   useEffect(() => {
@@ -21,7 +21,20 @@ function Portfolio() {
       try {
         setLoading(true);
         const projectsData = await ProjectService.getAllProjects();
-        setProjects(projectsData);
+        
+        // Remove duplicates by project ID to ensure no duplicates
+        const uniqueProjects = projectsData.reduce((acc, current) => {
+          const existingProject = acc.find(project => project.id === current.id);
+          if (!existingProject) {
+            acc.push(current);
+          }
+          return acc;
+        }, []);
+        
+        console.log('Total projects fetched:', projectsData.length);
+        console.log('Unique projects after deduplication:', uniqueProjects.length);
+        
+        setProjects(uniqueProjects);
       } catch (error) {
         console.error('Error fetching projects:', error);
         setProjects([]);
@@ -34,8 +47,10 @@ function Portfolio() {
   }, []);
 
   // Filter projects based on selected category
-  const filteredProjects = selectedCategory === 'All' 
-    ? projects 
+  const filteredProjects = selectedCategory === 'Featured'
+    ? projects.filter(project => project.featured === true)
+    : selectedCategory === 'All' 
+    ? projects // Show all projects without any filtering
     : projects.filter(project => project.category === selectedCategory);
 
   // Pagination logic
@@ -138,65 +153,64 @@ function Portfolio() {
         </div>
       </div>
 
-      {/* Featured Projects Section */}
-      {selectedCategory === 'All' && (
+      {/* Featured Projects Section - Only show when Featured is selected */}
+      {selectedCategory === 'Featured' && (
         <div className='mb-12 md:mb-16'>
           <h3 className='text-xl md:text-2xl font-semibold text-gray-800 text-center mb-6 md:mb-8 font-poppins'>Featured Projects</h3>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
             {trailCards.map((style, index) => {
               const project = currentProjects[index];
-              if (project?.featured) {
-                return (
-                  <animated.div key={project.id} style={style} className='transform hover:scale-105 transition-transform duration-300'>
-                    <div className='bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100'>
-                      <div className='relative'>
-                        <img
-                          src={project.imageSrc}
-                          alt={project.title}
-                          className='w-full h-48 object-cover'
-                        />
-                        <div className='absolute top-4 right-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium'>
-                          Featured
-                        </div>
-                      </div>
-                      <div className='p-6'>
-                        <h4 className='text-xl font-bold text-gray-800 mb-2'>{project.title}</h4>
-                        <p className='text-gray-600 text-sm mb-4 line-clamp-2'>{project.description}</p>
-                        <div className='flex items-center justify-between'>
-                          <span className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full'>{project.category}</span>
-                          <button
-                            onClick={() => handleProjectClick(project)}
-                            className='text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline transition-colors'
-                          >
-                            View Project →
-                          </button>
-                        </div>
+              return (
+                <animated.div key={project.id} style={style} className='transform hover:scale-105 transition-transform duration-300'>
+                  <div className='bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100'>
+                    <div className='relative'>
+                      <img
+                        src={project.imageSrc}
+                        alt={project.title}
+                        className='w-full h-48 object-cover'
+                      />
+                      <div className='absolute top-4 right-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium'>
+                        Featured
                       </div>
                     </div>
-                  </animated.div>
-                );
-              }
-              return null;
+                    <div className='p-6'>
+                      <h4 className='text-xl font-bold text-gray-800 mb-2'>{project.title}</h4>
+                      <p className='text-gray-600 text-sm mb-4 line-clamp-2'>{project.description}</p>
+                      <div className='flex items-center justify-between'>
+                        <span className='text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full'>{project.category}</span>
+                        <button
+                          onClick={() => handleProjectClick(project)}
+                          className='text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline transition-colors'
+                        >
+                          View Project →
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </animated.div>
+              );
             })}
           </div>
         </div>
       )}
 
-      {/* All Projects Grid */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
-        {trailCards.map((style, index) => (
-          <animated.div key={currentProjects[index].id} style={style} className='transform hover:scale-105 transition-transform duration-300'>
-            <ProjectCard 
-              imageSrc={currentProjects[index].imageSrc} 
-              title={currentProjects[index].title} 
-              demoText="View Project →"
-              onClick={() => handleProjectClick(currentProjects[index])}
-              category={currentProjects[index].category}
-              featured={currentProjects[index].featured}
-            />
-          </animated.div>
-        ))}
-      </div>
+      {/* All Projects Grid - Show for All and category filters */}
+      {selectedCategory !== 'Featured' && (
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
+          {trailCards.map((style, index) => (
+            <animated.div key={currentProjects[index].id} style={style} className='transform hover:scale-105 transition-transform duration-300'>
+              <ProjectCard 
+                imageSrc={currentProjects[index].imageSrc} 
+                title={currentProjects[index].title} 
+                demoText="View Project →"
+                onClick={() => handleProjectClick(currentProjects[index])}
+                category={currentProjects[index].category}
+                featured={currentProjects[index].featured}
+              />
+            </animated.div>
+          ))}
+        </div>
+      )}
 
       {/* Pagination Controls */}
       {totalPages > 1 && (

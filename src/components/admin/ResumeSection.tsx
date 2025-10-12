@@ -3,6 +3,10 @@ import { FaPlus, FaEdit, FaTrash, FaGraduationCap, FaBriefcase, FaCode, FaUser }
 import { ResumeService } from '../../services/resumeService';
 import { Experience, Education, Skill, AboutMe } from '../../types/resume';
 import { toast } from 'react-toastify';
+import ExperienceModal from './ExperienceModal';
+import EducationModal from './EducationModal';
+import SkillModal from './SkillModal';
+import AboutMeModal from './AboutMeModal';
 
 export default function ResumeSection() {
   const [activeTab, setActiveTab] = useState('experience');
@@ -41,7 +45,7 @@ export default function ResumeSection() {
     }
   };
 
-  const handleDelete = async (type, id) => {
+  const handleDelete = async (type: string, id: string) => {
     if (!confirm('Are you sure you want to delete this item?')) return;
 
     try {
@@ -66,7 +70,7 @@ export default function ResumeSection() {
     }
   };
 
-  const openModal = (type, item = null) => {
+  const openModal = (type: string, item: Experience | Education | Skill | null = null) => {
     setModalType(type);
     setEditingItem(item);
     setShowModal(true);
@@ -240,7 +244,7 @@ export default function ResumeSection() {
                       </div>
                       <div className="flex space-x-2 ml-4">
                         <button
-                          onClick={() => openModal('education', edu)}
+                          onClick={() => openModal('education', edu as Education | null)}
                           className="text-blue-600 hover:text-blue-800"
                         >
                           <FaEdit />
@@ -356,32 +360,37 @@ export default function ResumeSection() {
         )}
       </div>
 
-      {/* Modal placeholder - you'll need to create the actual modal component */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-4">
-                {editingItem ? 'Edit' : 'Add'} {modalType}
-              </h3>
-              <p className="text-gray-600">Modal component will be implemented here...</p>
-              <div className="flex justify-end space-x-3 mt-6">
-                <button
-                  onClick={closeModal}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleModalSave}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Modals */}
+      {showModal && modalType === 'experience' && (
+        <ExperienceModal
+          experience={editingItem as Experience | null}
+          onClose={closeModal}
+          onSave={handleModalSave}
+        />
+      )}
+
+      {showModal && modalType === 'education' && (
+        <EducationModal
+          education={editingItem as Education | null}
+          onClose={closeModal}
+          onSave={handleModalSave}
+        />
+      )}
+
+      {showModal && modalType === 'skill' && (
+        <SkillModal
+          skill={editingItem as Skill | null}
+          onClose={closeModal}
+          onSave={handleModalSave}
+        />
+      )}
+
+      {showModal && modalType === 'about' && (
+        <AboutMeModal
+          aboutMe={aboutMe}
+          onClose={closeModal}
+          onSave={handleModalSave}
+        />
       )}
     </div>
   );

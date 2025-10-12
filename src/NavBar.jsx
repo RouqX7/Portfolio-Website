@@ -8,18 +8,20 @@ function NavBar() {
   };
 
   return (
-    <nav className="bg-white sticky top-0 z-50 border-gray-200 font-poppins">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-white/20 shadow-lg font-poppins">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-6 py-4">
         {/* Logo or Name */}
-        <a href="#home" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="text-2xl font-bold text-gray-900">Farouq</span>
+        <a href="#home" className="flex items-center space-x-3 rtl:space-x-reverse group">
+          <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 transition-all duration-300 transform group-hover:scale-105">
+            Farouq Rabiu
+          </span>
         </a>
 
         {/* Toggle Button for mobile screens */}
         <button
           onClick={toggleMenu}
           type="button"
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-700 rounded-lg md:hidden hover:bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors"
           aria-controls="navbar-default"
           aria-expanded={isOpen}
         >
@@ -43,11 +45,11 @@ function NavBar() {
 
         {/* Navigation Menu */}
         <div className={`w-full md:block md:w-auto ${isOpen ? "block" : "hidden"}`} id="navbar-default">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-white md:flex-row md:space-x-8 md:mt-0 md:border-0">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg bg-white/50 backdrop-blur-sm md:bg-transparent md:flex-row md:space-x-2 md:mt-0 md:border-0">
             <li>
               <a
                 href="#home"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+                className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
                 aria-current="page"
               >
                 Home
@@ -56,7 +58,7 @@ function NavBar() {
             <li>
               <a
                 href="#about"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+                className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
               >
                 About
               </a>
@@ -64,7 +66,7 @@ function NavBar() {
             <li>
               <a
                 href="#portfolio"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+                className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
               >
                 Portfolio
               </a>
@@ -72,7 +74,7 @@ function NavBar() {
             <li>
               <a
                 href="#resume"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+                className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
               >
                 Resume
               </a>
@@ -80,7 +82,7 @@ function NavBar() {
             <li>
               <a
                 href="#services"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+                className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
               >
                 Services
               </a>
@@ -88,12 +90,11 @@ function NavBar() {
             <li>
               <a
                 href="#contact"
-                className="block py-2 px-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-gray-900 md:p-0"
+                className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
               >
                 Contact
               </a>
             </li>
-            
           </ul>
         </div>
       </div>

@@ -9,7 +9,6 @@ export interface Experience {
   endDate?: string; // Empty string or null for current position
   description: string;
   technologies?: string[];
-  order: number;
   createdAt: Date | Timestamp;
   updatedAt: Date | Timestamp;
 }
@@ -23,7 +22,6 @@ export interface Education {
   endDate?: string;
   gpa?: string;
   description?: string;
-  order: number;
   createdAt: Date | Timestamp;
   updatedAt: Date | Timestamp;
 }
@@ -33,7 +31,6 @@ export interface Skill {
   name: string;
   category: 'Technical' | 'Soft Skills' | 'Languages' | 'Tools';
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
-  order: number;
   createdAt: Date | Timestamp;
   updatedAt: Date | Timestamp;
 }
@@ -42,6 +39,14 @@ export interface AboutMe {
   id: string;
   content: string;
   updatedAt: Date | Timestamp;
+}
+
+export interface CV {
+  id: string;
+  fileName: string;
+  fileUrl: string;
+  uploadedAt: Date | Timestamp;
+  isActive: boolean;
 }
 
 // Create types
@@ -53,7 +58,6 @@ export interface CreateExperienceData {
   endDate?: string;
   description: string;
   technologies?: string[];
-  order: number;
 }
 
 export interface CreateEducationData {
@@ -64,14 +68,12 @@ export interface CreateEducationData {
   endDate?: string;
   gpa?: string;
   description?: string;
-  order: number;
 }
 
 export interface CreateSkillData {
   name: string;
   category: 'Technical' | 'Soft Skills' | 'Languages' | 'Tools';
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
-  order: number;
 }
 
 // Update types

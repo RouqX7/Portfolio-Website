@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { FaLongArrowAltRight } from 'react-icons/fa';
-import { MdOutlineWeb } from 'react-icons/md';
+import { FaCode, FaServer, FaPalette, FaRocket, FaArrowRight, FaCheck } from 'react-icons/fa';
 import { useTrail, animated } from 'react-spring';
-import { useInView } from 'react-intersection-observer'; // Import Intersection Observer
+import { useInView } from 'react-intersection-observer';
 import ServicesModal from '../components/ServicesModal';
 
 function Services() {
@@ -12,34 +11,49 @@ function Services() {
   // Service data for trail animation
   const services = [
     {
-      title: 'Full Stack Developer',
+      icon: FaCode,
+      title: 'Full Stack Development',
+      tagline: 'End-to-End Solutions',
       summaryItems: [
-        'Develop both frontend and backend components.',
-        'Create RESTful APIs and integrate with databases.',
-        'Ensure responsive design and cross-browser compatibility.',
-        'Deploy applications on cloud infrastructure.'
+        'Modern React & Node.js applications',
+        'RESTful APIs with comprehensive validation',
+        'Database design and optimization',
+        'Cloud deployment and scaling'
       ],
-      description: 'I offer expertise in both frontend and backend development.'
+      description: 'Complete web applications from concept to deployment, ensuring seamless integration between frontend and backend systems.',
+      gradient: 'from-blue-500 to-cyan-500',
+      bgGradient: 'from-blue-50 to-cyan-50',
+      borderColor: 'border-blue-200'
     },
     {
-      title: 'Backend Developer',
+      icon: FaServer,
+      title: 'Backend Architecture',
+      tagline: 'Robust & Scalable',
       summaryItems: [
-        'Design and implement scalable server-side applications.',
-        'Build and maintain databases.',
-        'Ensure security and data protection.',
-        'Optimize backend performance and scalability.'
+        'Microservices architecture design',
+        'Database optimization & caching',
+        'Security implementation & monitoring',
+        'Performance tuning & load balancing'
       ],
-      description: 'I specialize in creating robust backend solutions.'
+      description: 'Building enterprise-grade backend systems that can handle scale while maintaining security and performance.',
+      gradient: 'from-purple-500 to-pink-500',
+      bgGradient: 'from-purple-50 to-pink-50',
+      borderColor: 'border-purple-200'
     },
     {
-      title: 'Frontend Developer',
+      icon: FaPalette,
+      title: 'Frontend Design',
+      tagline: 'Beautiful & Functional',
       summaryItems: [
-        'Create responsive and accessible user interfaces.',
-        'Ensure cross-browser compatibility.',
-        'Optimize web performance for faster load times.',
-        'Collaborate with backend developers for seamless integration.'
+        'Responsive UI/UX design',
+        'Modern CSS frameworks & animations',
+        'Cross-browser compatibility',
+        'Performance optimization'
       ],
-      description: 'I focus on creating visually appealing and functional web interfaces.'
+      description: 'Creating stunning, user-friendly interfaces that deliver exceptional user experiences across all devices.',
+      gradient: 'from-green-500 to-teal-500',
+      bgGradient: 'from-green-50 to-teal-50',
+      borderColor: 'border-green-200'
     }
   ];
   
@@ -80,46 +94,97 @@ function Services() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
       <div className='max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12'>
-        <div className='flex flex-col font-poppins'>
-      {/* Title Section with Trail Animation */}
-      <div ref={textRef}>
-        {textTrail.map((style, index) => (
-          <animated.div key={index} style={style} className='text-center'>
-            {index === 0 ? (
-              <h1 className='text-4xl font-bold text-gray-800'>Services</h1>
-            ) : (
-              <h2 className='text-md mt-2 text-gray-600'>What I offer</h2>
-            )}
-          </animated.div>
-        ))}
-      </div>
+        <div className='font-poppins'>
+          {/* Header Section */}
+          <div ref={textRef} className='text-center mb-16'>
+            {textTrail.map((style, index) => (
+              <animated.div key={index} style={style}>
+                {index === 0 ? (
+                  <h1 className='text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-800 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4'>
+                    Services
+                  </h1>
+                ) : (
+                  <p className='text-xl md:text-2xl text-gray-600 font-medium'>
+                    Professional Development Solutions
+                  </p>
+                )}
+              </animated.div>
+            ))}
+          </div>
 
-      {/* Container for Service Boxes */}
-      <div ref={ref} className='flex-grow flex justify-center items-center'>
-        {/* Responsive Flexbox Layout */}
-        <div className='flex flex-col sm:flex-row sm:space-x-14 space-y-6 sm:space-y-0'>
-          {trail.map((style, index) => (
-            <animated.div key={index} style={style} className='bg-white h-64 w-full sm:w-48 rounded-md shadow-md'>
-              <div className='flex flex-col p-4'>
-                <MdOutlineWeb className='text-gray-500 text-3xl mt-24 ml-0' />
-                <p className='mt-4 text-left text-gray-800'>{services[index].title}</p>
-                <div className='flex flex-row mt-2 h-auto w-auto'>
+          {/* Services Grid */}
+          <div ref={ref} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+            {trail.map((style, index) => {
+              const service = services[index];
+              const Icon = service.icon;
+              return (
+                <animated.div
+                  key={index}
+                  style={style}
+                  className={`group relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border-2 ${service.borderColor} hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2`}
+                >
+                  {/* Icon with gradient background */}
+                  <div className={`w-16 h-16 bg-gradient-to-r ${service.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className='text-white text-2xl' />
+                  </div>
+
+                  {/* Title and tagline */}
+                  <div className='mb-6'>
+                    <h3 className='text-2xl font-bold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors'>
+                      {service.title}
+                    </h3>
+                    <p className={`text-sm font-semibold bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent`}>
+                      {service.tagline}
+                    </p>
+                  </div>
+
+                  {/* Feature list */}
+                  <div className='space-y-3 mb-8'>
+                    {service.summaryItems.map((item, itemIndex) => (
+                      <div key={itemIndex} className='flex items-start space-x-3'>
+                        <FaCheck className={`text-sm mt-1 bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent flex-shrink-0`} />
+                        <p className='text-gray-700 text-sm leading-relaxed'>{item}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA Button */}
                   <button
-                    onClick={() => handleOpenModal(services[index].title, services[index].summaryItems, services[index].description)}
-                    className='text-left text-gray-500'
+                    onClick={() => handleOpenModal(service.title, service.summaryItems, service.description)}
+                    className={`w-full bg-gradient-to-r ${service.gradient} text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:shadow-lg transform hover:scale-105 transition-all duration-300 group-hover:from-opacity-90 group-hover:to-opacity-90`}
                   >
-                    View more
+                    <span>Learn More</span>
+                    <FaArrowRight className='text-sm group-hover:translate-x-1 transition-transform duration-300' />
                   </button>
-                  <FaLongArrowAltRight className='mt-1 ml-1 text-gray-400 ' />
-                </div>
-              </div>
-            </animated.div>
-          ))}
-        </div>
-      </div>
 
-        {/* Modal */}
-        {showModal && <ServicesModal onClose={() => setShowModal(false)} {...modalData} />}
+                  {/* Decorative elements */}
+                  <div className={`absolute top-4 right-4 w-20 h-20 bg-gradient-to-r ${service.gradient} opacity-5 rounded-full blur-xl group-hover:opacity-10 transition-opacity duration-300`}></div>
+                </animated.div>
+              );
+            })}
+          </div>
+
+          {/* Bottom CTA Section */}
+          <div className='text-center mt-16'>
+            <div className='bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-xl border-2 border-blue-100 max-w-4xl mx-auto'>
+              <h3 className='text-3xl font-bold text-gray-900 mb-4'>
+                Ready to Build Something Amazing?
+              </h3>
+              <p className='text-lg text-gray-600 mb-6'>
+                Let's discuss your project and bring your vision to life with modern, scalable solutions.
+              </p>
+              <a 
+                href="#contact"
+                className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center space-x-2 mx-auto inline-block'
+              >
+                <FaRocket />
+                <span>Start Your Project</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Modal */}
+          {showModal && <ServicesModal onClose={() => setShowModal(false)} {...modalData} />}
         </div>
       </div>
     </div>
