@@ -3,7 +3,7 @@ import { useTrail, animated, useSpring } from 'react-spring';
 import { useInView } from 'react-intersection-observer'; // Import Intersection Observer
 
 function ProfileCard() {
-  const [imageSrc, setImageSrc] = useState('/FarouqLinkedImage.jpg');
+  const [imageSrc, setImageSrc] = useState('/gradphoto.jpg');
   const [hovered, setHovered] = useState(false);
 
   // Intersection Observer to trigger animations only when in view

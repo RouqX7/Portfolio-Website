@@ -44,16 +44,18 @@ function PortfolioModal({ isOpen, onClose, project }) {
                 </div>
 
                 <div className="flex flex-wrap gap-4 mt-8">
-                  {/* Live Demo Button */}
-                  <a
-                    href={project.liveLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    <FaExternalLinkAlt />
-                    Live Demo
-                  </a>
+                  {/* Live Demo Button - Hidden for Backend projects */}
+                  {project.category !== 'Backend' && project.liveLink && (
+                    <a
+                      href={project.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      <FaExternalLinkAlt />
+                      Live Demo
+                    </a>
+                  )}
 
                   {/* GitHub Link */}
                   <a

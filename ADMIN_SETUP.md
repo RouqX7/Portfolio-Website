@@ -43,10 +43,25 @@ Go to [Firebase Console](https://console.firebase.google.com/project/portfolio-w
 
 ### 2. Create Admin User
 
+#### Step 2.1: Create Firebase Auth User
 1. In Authentication section, click "Users" tab
 2. Click "Add User"
 3. Enter your email and password (this will be your admin login)
 4. Click "Add User"
+5. **Copy the User UID** (you'll need this for the next step)
+
+#### Step 2.2: Create User Document in Firestore
+1. Go to Firestore Database
+2. Click "Start Collection"
+3. Collection ID: `users`
+4. Click "Next"
+5. Document ID: Paste the **User UID** you copied
+6. Add fields:
+   - `email` (string): your-email@example.com
+   - `isAdmin` (boolean): true
+   - `createdAt` (timestamp): Click "timestamp" and select current time
+   - `displayName` (string): Your Name (optional)
+7. Click "Save"
 
 ### 3. Set Up Environment Variables
 
@@ -72,9 +87,27 @@ In Firestore Database > Rules, replace with:
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /projects/{document} {
-      allow read: if true;  // Anyone can read projects
-      allow write: if request.auth != null;  // Only authenticated users can write
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Users collection - users can read their own doc, only admins can write
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if isAdmin();
+    }
+    
+    // Projects collection - anyone can read, only admins can write
+    match /projects/{projectId} {
+      allow read: if true;  // Public read for portfolio display
+      allow write: if isAdmin();
+    }
+    
+    // Everything else is admin-only
+    match /{document=**} {
+      allow read, write: if isAdmin();
     }
   }
 }

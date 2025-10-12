@@ -25,23 +25,28 @@ function About() {
   const trailHeadings = useTrail(2, {
     opacity: inView ? 1 : 0,
     transform: inView ? 'translateY(0)' : 'translateY(20px)',
-    config: { mass: 5, tension: 100, friction: 80 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 200,
   });
 
   const trailCards = useTrail(cards.length, {
     opacity: inView ? 1 : 0,
     x: inView ? 0 : -20,
-    config: { mass: 5, tension: 100, friction: 80 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 400,
   });
 
   const trailText = useTrail(textItems.length, {
     opacity: inView ? 1 : 0,
     x: inView ? 0 : -20,
-    config: { mass: 5, tension: 100, friction: 80 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 600,
   });
 
   return (
-    <div ref={ref} className="max-w-screen-lg mx-auto p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12">
+        <div ref={ref} className="max-w-screen-lg mx-auto p-4">
       {/* Apply trail animation to "About me" and "My Introduction" */}
       {trailHeadings.map((style, index) => (
         <animated.div key={index} style={style} className="text-center">
@@ -80,6 +85,8 @@ function About() {
       </div>
 
       <DownloadCVButton />
+        </div>
+      </div>
     </div>
   );
 }

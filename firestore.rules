@@ -1,6 +1,3 @@
-// Updated Firestore Security Rules for Admin System
-// Copy these rules to Firebase Console > Firestore Database > Rules
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -22,6 +19,27 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
+    // Resume collections - anyone can read, only admins can write
+    match /experiences/{experienceId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /education/{educationId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /skills/{skillId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /aboutMe/{aboutMeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
     // Everything else is admin-only
     match /{document=**} {
       allow read, write: if isAdmin();
@@ -29,27 +47,3 @@ service cloud.firestore {
   }
 }
 
-// Alternative simpler rules (if you prefer):
-/*
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Allow anyone to read projects
-    match /projects/{projectId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    
-    // Allow admins to read their own admin doc
-    match /admins/{adminId} {
-      allow read: if request.auth != null && request.auth.token.email == resource.data.email;
-      allow write: if false;
-    }
-    
-    // Everything else requires authentication
-    match /{document=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
-*/

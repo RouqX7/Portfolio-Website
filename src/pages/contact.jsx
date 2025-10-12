@@ -69,7 +69,8 @@ function Contact() {
     opacity: cardsInView ? 1 : 0,
     transform: cardsInView ? 'translateY(0)' : 'translateY(20px)',
     from: { opacity: 0, transform: 'translateY(20px)' },
-    config: { tension: 120, friction: 20 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 200,
   });
 
   // Trail animation for the form fields
@@ -77,11 +78,14 @@ function Contact() {
     opacity: formInView ? 1 : 0,
     transform: formInView ? 'translateY(0)' : 'translateY(20px)',
     from: { opacity: 0, transform: 'translateY(20px)' },
-    config: { tension: 120, friction: 20 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 400,
   });
 
   return (
-    <div className='min-h-screen flex flex-col justify-center items-center p-4 sm:p-8 font-poppins'>
+    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
+      <div className='max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12'>
+        <div className='flex flex-col justify-center items-center font-poppins'>
       <div className='text-center mb-12'>
         <h1 className='text-4xl font-bold text-gray-800'>Talk to me</h1>
       </div>
@@ -158,7 +162,9 @@ function Contact() {
             </button>
           </form>
         </animated.div>
+        </div>
       </div>
+    </div>
     </div>
   );
 }

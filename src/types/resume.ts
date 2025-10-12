@@ -1,0 +1,83 @@
+import { Timestamp } from 'firebase/firestore';
+
+export interface Experience {
+  id: string;
+  title: string;
+  company: string;
+  location?: string;
+  startDate: string;
+  endDate?: string; // Empty string or null for current position
+  description: string;
+  technologies?: string[];
+  order: number;
+  createdAt: Date | Timestamp;
+  updatedAt: Date | Timestamp;
+}
+
+export interface Education {
+  id: string;
+  degree: string;
+  institution: string;
+  location?: string;
+  startDate: string;
+  endDate?: string;
+  gpa?: string;
+  description?: string;
+  order: number;
+  createdAt: Date | Timestamp;
+  updatedAt: Date | Timestamp;
+}
+
+export interface Skill {
+  id: string;
+  name: string;
+  category: 'Technical' | 'Soft Skills' | 'Languages' | 'Tools';
+  level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
+  order: number;
+  createdAt: Date | Timestamp;
+  updatedAt: Date | Timestamp;
+}
+
+export interface AboutMe {
+  id: string;
+  content: string;
+  updatedAt: Date | Timestamp;
+}
+
+// Create types
+export interface CreateExperienceData {
+  title: string;
+  company: string;
+  location?: string;
+  startDate: string;
+  endDate?: string;
+  description: string;
+  technologies?: string[];
+  order: number;
+}
+
+export interface CreateEducationData {
+  degree: string;
+  institution: string;
+  location?: string;
+  startDate: string;
+  endDate?: string;
+  gpa?: string;
+  description?: string;
+  order: number;
+}
+
+export interface CreateSkillData {
+  name: string;
+  category: 'Technical' | 'Soft Skills' | 'Languages' | 'Tools';
+  level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
+  order: number;
+}
+
+// Update types
+export interface UpdateExperienceData extends Partial<CreateExperienceData> {}
+export interface UpdateEducationData extends Partial<CreateEducationData> {}
+export interface UpdateSkillData extends Partial<CreateSkillData> {}
+export interface UpdateAboutMeData {
+  content: string;
+}

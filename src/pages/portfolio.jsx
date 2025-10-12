@@ -1,82 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTrail, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import ProjectCard from '../components/ProjectCard';
 import PortfolioModal from '../components/PortfolioModal';
+import { ProjectService } from '../services/projectService';
 
 function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const projectsPerPage = 6; // Show 6 projects per page
 
-  const categories = ['All', 'Web', 'Mobile', 'Design'];
+  const categories = ['All', 'Web', 'Mobile', 'Desktop', 'Backend', 'Other'];
 
-  const projects = [
-    { 
-      id: 1, 
-      imageSrc: '/PortfolioImage.png', 
-      title: 'RavKaptures', 
-      demoText: 'View Project →', 
-      category: 'Web',
-      description: 'Professional photography and videography portfolio website showcasing creative work, client galleries, and booking services.',
-      technologies: 'React, Tailwind CSS, Firebase, Responsive Design',
-      liveLink: 'https://ravkaptures-f58d9.web.app',
-      githubLink: 'https://github.com/RouqX7/RavKaptures',
-      featured: true,
-    },
-    { 
-      id: 2, 
-      imageSrc: '/PortfolioImage.png', 
-      title: 'LinkUp', 
-      demoText: 'View Project →', 
-      category: 'Mobile',
-      description: 'Social networking mobile app for connecting people with similar interests, goals, and professional backgrounds.',
-      technologies: 'React Native, Firebase, Social APIs, Real-time Chat',
-      liveLink: 'https://linkup-5601e.web.app',
-      githubLink: 'https://github.com/RouqX7/LinkUp',
-      featured: true,
-    },
-    { 
-      id: 3, 
-      imageSrc: '/PortfolioImage.png', 
-      title: 'IWasHere', 
-      demoText: 'View Project →', 
-      category: 'Mobile',
-      description: 'Location-based social app for users to check-in, share experiences, and discover places around them.',
-      technologies: 'React Native, Firebase, Geolocation, Maps Integration',
-      liveLink: 'https://iwashere-c4c46.web.app',
-      githubLink: 'https://github.com/RouqX7/IWasHere',
-      featured: false,
-    },
-    { 
-      id: 4, 
-      imageSrc: '/PortfolioImage.png', 
-      title: 'PayLite', 
-      demoText: 'View Project →', 
-      category: 'Web',
-      description: 'Lightweight payment processing solution for small businesses and startups with minimal setup requirements.',
-      technologies: 'React, Node.js, Stripe API, MongoDB',
-      liveLink: 'https://paylite-demo.web.app',
-      githubLink: 'https://github.com/RouqX7/PayLite',
-      featured: true,
-    },
-    { 
-      id: 5, 
-      imageSrc: '/PortfolioImage.png', 
-      title: 'Southeast Energy Brokers', 
-      demoText: 'View Project →', 
-      category: 'Web',
-      description: 'Energy brokerage website for southeast region providing energy services, quotes, and customer management.',
-      technologies: 'React, Tailwind CSS, Firebase, Energy APIs',
-      liveLink: 'https://southeast2785.web.app',
-      githubLink: 'https://github.com/RouqX7/southeastenergybrokers',
-      featured: false,
-    },
-  ];
+  // Fetch projects from Firebase
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const projectsData = await ProjectService.getAllProjects();
+        setProjects(projectsData);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   // Filter projects based on selected category
   const filteredProjects = selectedCategory === 'All' 
     ? projects 
     : projects.filter(project => project.category === selectedCategory);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  const startIndex = (currentPage - 1) * projectsPerPage;
+  const endIndex = startIndex + projectsPerPage;
+  const currentProjects = filteredProjects.slice(startIndex, endIndex);
+
+  // Reset to page 1 when category changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory]);
 
   // Handle project card click
   const handleProjectClick = (project) => {
@@ -103,27 +74,43 @@ function Portfolio() {
   const trailText = useTrail(trailItems.length, {
     opacity: inView ? 1 : 0,
     transform: inView ? 'translateY(0)' : 'translateY(30px)',
-    config: { tension: 120, friction: 80 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 200,
   });
 
   // Trail animation for category buttons
   const trailCategories = useTrail(categories.length, {
     opacity: inView ? 1 : 0,
     transform: inView ? 'translateY(0)' : 'translateY(20px)',
-    config: { tension: 150, friction: 50 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 400,
   });
 
   // Trail animation for project cards
-  const trailCards = useTrail(filteredProjects.length, {
+  const trailCards = useTrail(currentProjects.length, {
     opacity: inView ? 1 : 0,
     transform: inView ? 'translateY(0)' : 'translateY(30px)',
-    config: { tension: 100, friction: 60 },
+    config: { mass: 1, tension: 80, friction: 26 },
+    delay: 600,
   });
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
+        <div className='text-center'>
+          <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4'></div>
+          <p className='text-xl text-gray-600 font-poppins'>Loading projects...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className='min-h-screen flex flex-col p-6 md:p-12 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'> 
+    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
+      <div className='max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12'>
       {/* Portfolio Heading Section */}
-      <div ref={ref} className='text-center mb-16'>
+      <div ref={ref} className='text-center mb-12 md:mb-16'>
         {trailText.map((style, index) => (
           <animated.div key={index} style={style}>
             {trailItems[index]}
@@ -132,8 +119,8 @@ function Portfolio() {
       </div>
 
       {/* Category Filter Buttons */}
-      <div className='flex justify-center mb-16'>
-        <div className='flex flex-wrap justify-center gap-4 max-w-2xl'>
+      <div className='flex justify-center mb-12 md:mb-16'>
+        <div className='flex flex-wrap justify-center gap-3 md:gap-4 max-w-2xl'>
           {trailCategories.map((style, index) => (
             <animated.div
               key={categories[index]}
@@ -153,11 +140,11 @@ function Portfolio() {
 
       {/* Featured Projects Section */}
       {selectedCategory === 'All' && (
-        <div className='mb-16'>
-          <h3 className='text-2xl font-semibold text-gray-800 text-center mb-8 font-poppins'>Featured Projects</h3>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto'>
+        <div className='mb-12 md:mb-16'>
+          <h3 className='text-xl md:text-2xl font-semibold text-gray-800 text-center mb-6 md:mb-8 font-poppins'>Featured Projects</h3>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
             {trailCards.map((style, index) => {
-              const project = filteredProjects[index];
+              const project = currentProjects[index];
               if (project?.featured) {
                 return (
                   <animated.div key={project.id} style={style} className='transform hover:scale-105 transition-transform duration-300'>
@@ -181,7 +168,7 @@ function Portfolio() {
                             onClick={() => handleProjectClick(project)}
                             className='text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline transition-colors'
                           >
-                            {project.demoText}
+                            View Project →
                           </button>
                         </div>
                       </div>
@@ -196,20 +183,57 @@ function Portfolio() {
       )}
 
       {/* All Projects Grid */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
         {trailCards.map((style, index) => (
-          <animated.div key={filteredProjects[index].id} style={style} className='transform hover:scale-105 transition-transform duration-300'>
+          <animated.div key={currentProjects[index].id} style={style} className='transform hover:scale-105 transition-transform duration-300'>
             <ProjectCard 
-              imageSrc={filteredProjects[index].imageSrc} 
-              title={filteredProjects[index].title} 
-              demoText={filteredProjects[index].demoText} 
-              onClick={() => handleProjectClick(filteredProjects[index])}
-              category={filteredProjects[index].category}
-              featured={filteredProjects[index].featured}
+              imageSrc={currentProjects[index].imageSrc} 
+              title={currentProjects[index].title} 
+              demoText="View Project →"
+              onClick={() => handleProjectClick(currentProjects[index])}
+              category={currentProjects[index].category}
+              featured={currentProjects[index].featured}
             />
           </animated.div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className='flex justify-center items-center space-x-4 mt-12'>
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className='px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
+          >
+            Previous
+          </button>
+          
+          <div className='flex space-x-2'>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-3 py-2 rounded-lg transition-colors ${
+                  currentPage === page
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+          
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className='px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* Modal */}
       {selectedProject && (
@@ -219,6 +243,7 @@ function Portfolio() {
           project={selectedProject} 
         />
       )}
+      </div>
     </div>
   );
 }

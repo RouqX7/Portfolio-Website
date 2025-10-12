@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useSpring, animated, useTrail } from 'react-spring';
 
 function HomeProfile() {
-  const [imageSrc, setImageSrc] = useState('/FarouqLinkedImage.jpg'); // Initial image
+  const [imageSrc, setImageSrc] = useState('/gradphoto.jpg'); // Initial image
   const [hovered, setHovered] = useState(false); // State to detect hover
 
   // Function to update the image source
   const handleImageUpdate = () => {
-    const imagePath = '/FarouqLinkedImage.jpg'; // Replace with the actual image path
+    const imagePath = '/gradphoto.jpg'; // Replace with the actual image path
     setImageSrc(imagePath);
   };
 

@@ -34,7 +34,8 @@ function Resume() {
         opacity: inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : 'translateY(20px)',
         from: { opacity: 0, transform: 'translateY(20px)' },
-        config: { tension: 80, friction: 40 },
+        config: { mass: 1, tension: 80, friction: 26 },
+        delay: 200,
     });
 
     // Trail for the "Resume" and "Most Recent work" text
@@ -42,7 +43,8 @@ function Resume() {
         opacity: inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : 'translateY(20px)',
         from: { opacity: 0, transform: 'translateY(20px)' },
-        config: { tension: 80, friction: 40 },
+        config: { mass: 1, tension: 80, friction: 26 },
+        delay: 400,
     });
 
     // Set the content to be animated using trail, but ensure useTrail is always called
@@ -59,11 +61,14 @@ function Resume() {
         opacity: inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : 'translateY(20px)',
         from: { opacity: 0, transform: 'translateY(20px)' },
-        config: { tension: 80, friction: 40 },
+        config: { mass: 1, tension: 80, friction: 26 },
+        delay: 600,
     });
 
     return (
-        <div className='min-h-screen flex flex-col font-poppins'>
+        <div className='min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
+            <div className='max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12'>
+                <div className='flex flex-col font-poppins'>
             {/* Text Section for Resume and Most Recent Work */}
             <div ref={ref}>
                 {textTrail.map((style, index) => (
@@ -136,7 +141,9 @@ function Resume() {
                         )}
                     </div>
                 </div>
+                </div>
             </div>
+        </div>
         </div>
     );
 }
