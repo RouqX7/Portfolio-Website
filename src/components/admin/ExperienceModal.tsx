@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ResumeService } from '../../services/resumeService';
-import { Experience, CreateExperienceData } from '../../types/resume';
+import { Experience, CreateExperienceData, UpdateExperienceData } from '../../types/resume';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
@@ -66,29 +66,49 @@ export default function ExperienceModal({ experience, onClose, onSave }: Experie
     setLoading(true);
 
     try {
-      const data: any = {
-        title: formData.title,
-        company: formData.company,
-        startDate: formData.startDate,
-        description: formData.description
-      };
-
-      // Only add optional fields if they have values
-      if (formData.location?.trim()) {
-        data.location = formData.location;
-      }
-      if (formData.endDate?.trim()) {
-        data.endDate = formData.endDate;
-      }
-      if (formData.technologies.length > 0) {
-        data.technologies = formData.technologies;
-      }
-
       if (experience) {
-        await ResumeService.updateExperience(experience.id, data);
+        // Update existing experience
+        const updateData: UpdateExperienceData = {
+          title: formData.title,
+          company: formData.company,
+          startDate: formData.startDate,
+          description: formData.description
+        };
+
+        // Only add optional fields if they have values
+        if (formData.location?.trim()) {
+          updateData.location = formData.location;
+        }
+        if (formData.endDate?.trim()) {
+          updateData.endDate = formData.endDate;
+        }
+        if (formData.technologies.length > 0) {
+          updateData.technologies = formData.technologies;
+        }
+
+        await ResumeService.updateExperience(experience.id, updateData);
         toast.success('Experience updated successfully');
       } else {
-        await ResumeService.createExperience(data);
+        // Create new experience
+        const createData: CreateExperienceData = {
+          title: formData.title,
+          company: formData.company,
+          startDate: formData.startDate,
+          description: formData.description
+        };
+
+        // Only add optional fields if they have values
+        if (formData.location?.trim()) {
+          createData.location = formData.location;
+        }
+        if (formData.endDate?.trim()) {
+          createData.endDate = formData.endDate;
+        }
+        if (formData.technologies.length > 0) {
+          createData.technologies = formData.technologies;
+        }
+
+        await ResumeService.createExperience(createData);
         toast.success('Experience added successfully');
       }
 

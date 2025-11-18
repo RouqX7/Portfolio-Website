@@ -199,7 +199,15 @@ function Resume() {
             </div>
 
                 {/* Download CV Button */}
-                <DownloadCVButton />
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+                    <DownloadCVButton />
+                    <a
+                        href="/cv-video"
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105"
+                    >
+                        Watch My CV Video
+                    </a>
+                </div>
             </div>
         </div>
         </div>

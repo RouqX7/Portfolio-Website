@@ -1,6 +1,7 @@
 import { 
   collection, 
   addDoc, 
+  setDoc,
   updateDoc, 
   deleteDoc, 
   doc, 
@@ -20,14 +21,15 @@ const PROJECTS_COLLECTION = 'projects';
 export class ProjectService {
   // Create
   static async createProject(projectData: CreateProjectData): Promise<string> {
+    // Create a document reference with auto-generated ID
     const projectRef = doc(collection(db, PROJECTS_COLLECTION));
     const projectDoc = {
-      id: projectRef.id,
       ...projectData,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     };
-    await addDoc(collection(db, PROJECTS_COLLECTION), projectDoc);
+    // Use setDoc to create the document with the specific ID
+    await setDoc(projectRef, projectDoc);
     return projectRef.id;
   }
 
@@ -35,17 +37,28 @@ export class ProjectService {
   static async getProject(projectId: string): Promise<Project | null> {
     const projectRef = doc(db, PROJECTS_COLLECTION, projectId);
     const projectSnap = await getDoc(projectRef);
-    return projectSnap.exists() ? projectSnap.data() as Project : null;
+    if (!projectSnap.exists()) return null;
+    const data = projectSnap.data();
+    const { id: _, ...rest } = data;
+    return {
+      id: projectSnap.id, // Use the actual Firestore document ID
+      ...rest
+    } as Project;
   }
 
   static async getAllProjects(limitCount: number = 50): Promise<Project[]> {
     const projectsRef = collection(db, PROJECTS_COLLECTION);
     const q = query(projectsRef, orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    } as Project));
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      // Remove the 'id' field from data if it exists (from old documents)
+      const { id: _, ...rest } = data;
+      return {
+        id: doc.id, // Use the actual Firestore document ID
+        ...rest
+      } as Project;
+    });
   }
 
   static async getFeaturedProjects(limitCount: number = 10): Promise<Project[]> {
@@ -53,7 +66,14 @@ export class ProjectService {
     const q = query(projectsRef, orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs
-      .map(doc => ({ id: doc.id, ...doc.data() } as Project))
+      .map(doc => {
+        const data = doc.data();
+        const { id: _, ...rest } = data;
+        return {
+          id: doc.id, // Use the actual Firestore document ID
+          ...rest
+        } as Project;
+      })
       .filter(project => project.featured)
       .slice(0, limitCount);
   }

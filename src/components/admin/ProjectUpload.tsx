@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaTimes, FaUpload } from 'react-icons/fa';
 import { ProjectService } from '../../services/projectService';
-import { Project, CreateProjectData } from '../../types/projects';
+import { Project, CreateProjectData, UpdateProjectData } from '../../types/projects';
 import { toast } from 'react-toastify';
 
 interface ProjectUploadProps {
@@ -83,31 +83,82 @@ export default function ProjectUpload({ project, onClose, onUploadComplete }: Pr
     setUploading(true);
 
     try {
-      let imageUrl = formData.imageSrc;
-      let videoUrl = formData.videoSrc;
-
-      // Upload new image if provided
-      if (imageFile) {
-        imageUrl = await ProjectService.uploadProjectImage(imageFile);
-      }
-
-      // Upload new video if provided
-      if (videoFile) {
-        videoUrl = await ProjectService.uploadProjectVideo(videoFile);
-      }
-
-      const projectData: CreateProjectData = {
-        ...formData,
-        imageSrc: imageUrl,
-        videoSrc: videoUrl
-      };
-
       if (project) {
         // Update existing project
-        await ProjectService.updateProject(project.id, projectData);
+        let imageUrl = project.imageSrc; // Preserve existing image
+        let videoUrl = project.videoSrc || undefined; // Preserve existing video
+
+        // Upload new image if provided
+        if (imageFile) {
+          imageUrl = await ProjectService.uploadProjectImage(imageFile);
+        }
+
+        // Upload new video if provided
+        if (videoFile) {
+          videoUrl = await ProjectService.uploadProjectVideo(videoFile);
+        }
+
+        // Build update data - only include fields that should be updated
+        const updateData: UpdateProjectData = {
+          title: formData.title,
+          description: formData.description,
+          technologies: formData.technologies,
+          category: formData.category,
+          githubLink: formData.githubLink,
+          imageSrc: imageUrl,
+          featured: formData.featured
+        };
+
+        // Handle liveLink and videoSrc based on category
+        if (formData.category !== 'Backend') {
+          if (formData.liveLink?.trim()) {
+            updateData.liveLink = formData.liveLink;
+          }
+          if (videoUrl) {
+            updateData.videoSrc = videoUrl;
+          } else if (formData.videoSrc?.trim()) {
+            updateData.videoSrc = formData.videoSrc;
+          }
+        }
+        // For Backend projects, don't include liveLink and videoSrc in update
+
+        await ProjectService.updateProject(project.id, updateData);
         toast.success('Project updated successfully!');
       } else {
         // Create new project
+        let imageUrl = formData.imageSrc;
+        let videoUrl = formData.videoSrc;
+
+        // Upload new image if provided
+        if (imageFile) {
+          imageUrl = await ProjectService.uploadProjectImage(imageFile);
+        }
+
+        // Upload new video if provided
+        if (videoFile) {
+          videoUrl = await ProjectService.uploadProjectVideo(videoFile);
+        }
+
+        const projectData: CreateProjectData = {
+          title: formData.title,
+          description: formData.description,
+          technologies: formData.technologies,
+          category: formData.category,
+          githubLink: formData.githubLink,
+          imageSrc: imageUrl,
+          featured: formData.featured
+        };
+
+        // Handle liveLink and videoSrc based on category
+        if (formData.category !== 'Backend') {
+          if (formData.liveLink?.trim()) {
+            projectData.liveLink = formData.liveLink;
+          }
+          if (videoUrl?.trim()) {
+            projectData.videoSrc = videoUrl;
+          }
+        }
+
         await ProjectService.createProject(projectData);
         toast.success('Project created successfully!');
       }

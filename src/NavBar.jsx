@@ -89,6 +89,14 @@ function NavBar() {
             </li>
             <li>
               <a
+                href="/cv-video"
+                className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
+              >
+                CV Video
+              </a>
+            </li>
+            <li>
+              <a
                 href="#contact"
                 className="block py-2 px-4 text-gray-700 rounded-lg hover:bg-white/50 md:hover:bg-gradient-to-r md:hover:from-blue-50 md:hover:to-purple-50 md:hover:text-blue-600 transition-all duration-300 font-medium"
               >

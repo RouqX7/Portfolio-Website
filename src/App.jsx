@@ -13,6 +13,7 @@ import Skills from './pages/skills';
 import Portfolio from './pages/portfolio';
 import Resume from './pages/Resume';
 import Contact from './pages/contact';
+import CVVideo from './pages/CVVideo';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/admin';
 
@@ -69,6 +70,9 @@ function App() {
         <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+        {/* CV Video Route */}
+        <Route path="/cv-video" element={<CVVideo />} />
       </Routes>
     </div>
   );

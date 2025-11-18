@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { FaHome, FaProjectDiagram, FaFileAlt, FaFilePdf, FaCog, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaProjectDiagram, FaFileAlt, FaFilePdf, FaVideo, FaCog, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProjectsSection from '../components/admin/ProjectsSection';
 import ResumeSection from '../components/admin/ResumeSection';
 import CVSection from '../components/admin/CVSection';
+import CVVideoSection from '../components/admin/CVVideoSection';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -60,6 +61,8 @@ export default function AdminDashboard() {
         return <ResumeSection />;
       case 'cv':
         return <CVSection />;
+      case 'cvVideo':
+        return <CVVideoSection />;
       case 'settings':
         return (
           <div className="p-6">
@@ -192,6 +195,21 @@ export default function AdminDashboard() {
           >
             <FaFilePdf />
             <span>CV Upload</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveSection('cvVideo');
+              setSidebarOpen(false);
+            }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+              activeSection === 'cvVideo'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <FaVideo />
+            <span>CV Video</span>
           </button>
 
           <button

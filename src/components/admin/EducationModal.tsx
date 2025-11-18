@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ResumeService } from '../../services/resumeService';
-import { Education, CreateEducationData } from '../../types/resume';
+import { Education, CreateEducationData, UpdateEducationData } from '../../types/resume';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
@@ -48,31 +48,53 @@ export default function EducationModal({ education, onClose, onSave }: Education
     setLoading(true);
 
     try {
-      const data: any = {
-        degree: formData.degree,
-        institution: formData.institution,
-        startDate: formData.startDate
-      };
-
-      // Only add optional fields if they have values
-      if (formData.location?.trim()) {
-        data.location = formData.location;
-      }
-      if (formData.endDate?.trim()) {
-        data.endDate = formData.endDate;
-      }
-      if (formData.gpa?.trim()) {
-        data.gpa = formData.gpa;
-      }
-      if (formData.description?.trim()) {
-        data.description = formData.description;
-      }
-
       if (education) {
-        await ResumeService.updateEducation(education.id, data);
+        // Update existing education
+        const updateData: UpdateEducationData = {
+          degree: formData.degree,
+          institution: formData.institution,
+          startDate: formData.startDate
+        };
+
+        // Only add optional fields if they have values
+        if (formData.location?.trim()) {
+          updateData.location = formData.location;
+        }
+        if (formData.endDate?.trim()) {
+          updateData.endDate = formData.endDate;
+        }
+        if (formData.gpa?.trim()) {
+          updateData.gpa = formData.gpa;
+        }
+        if (formData.description?.trim()) {
+          updateData.description = formData.description;
+        }
+
+        await ResumeService.updateEducation(education.id, updateData);
         toast.success('Education updated successfully');
       } else {
-        await ResumeService.createEducation(data);
+        // Create new education
+        const createData: CreateEducationData = {
+          degree: formData.degree,
+          institution: formData.institution,
+          startDate: formData.startDate
+        };
+
+        // Only add optional fields if they have values
+        if (formData.location?.trim()) {
+          createData.location = formData.location;
+        }
+        if (formData.endDate?.trim()) {
+          createData.endDate = formData.endDate;
+        }
+        if (formData.gpa?.trim()) {
+          createData.gpa = formData.gpa;
+        }
+        if (formData.description?.trim()) {
+          createData.description = formData.description;
+        }
+
+        await ResumeService.createEducation(createData);
         toast.success('Education added successfully');
       }
 

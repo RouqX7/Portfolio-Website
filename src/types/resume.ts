@@ -49,6 +49,14 @@ export interface CV {
   isActive: boolean;
 }
 
+export interface CVVideo {
+  id: string;
+  fileName: string;
+  fileUrl: string;
+  uploadedAt: Date | Timestamp;
+  isActive: boolean;
+}
+
 // Create types
 export interface CreateExperienceData {
   title: string;

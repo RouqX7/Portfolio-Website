@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ResumeService } from '../../services/resumeService';
-import { Skill, CreateSkillData } from '../../types/resume';
+import { Skill, CreateSkillData, UpdateSkillData } from '../../types/resume';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
@@ -40,17 +40,25 @@ export default function SkillModal({ skill, onClose, onSave }: SkillModalProps) 
     setLoading(true);
 
     try {
-      const data: CreateSkillData = {
-        name: formData.name,
-        category: formData.category,
-        level: formData.level
-      };
-
       if (skill) {
-        await ResumeService.updateSkill(skill.id, data);
+        // Update existing skill
+        const updateData: UpdateSkillData = {
+          name: formData.name,
+          category: formData.category,
+          level: formData.level
+        };
+
+        await ResumeService.updateSkill(skill.id, updateData);
         toast.success('Skill updated successfully');
       } else {
-        await ResumeService.createSkill(data);
+        // Create new skill
+        const createData: CreateSkillData = {
+          name: formData.name,
+          category: formData.category,
+          level: formData.level
+        };
+
+        await ResumeService.createSkill(createData);
         toast.success('Skill added successfully');
       }
 

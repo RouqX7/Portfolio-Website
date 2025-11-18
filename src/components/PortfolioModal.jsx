@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { FaLocationArrow, FaGithub, FaArrowLeft, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { FaLocationArrow, FaGithub, FaArrowLeft, FaExternalLinkAlt, FaTimes, FaPlay } from "react-icons/fa";
 
 function PortfolioModal({ isOpen, onClose, project }) {
   const [videoMode, setVideoMode] = useState(false);
+
+  // Reset video mode when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setVideoMode(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -44,6 +51,17 @@ function PortfolioModal({ isOpen, onClose, project }) {
                 </div>
 
                 <div className="flex flex-wrap gap-4 mt-8">
+                  {/* Demo Video Button - Show when video exists */}
+                  {project.videoSrc && (
+                    <button
+                      onClick={() => setVideoMode(true)}
+                      className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-300 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      <FaPlay />
+                      Demo
+                    </button>
+                  )}
+
                   {/* Live Demo Button - Hidden for Backend projects */}
                   {project.category !== 'Backend' && project.liveLink && (
                     <a
@@ -57,16 +75,18 @@ function PortfolioModal({ isOpen, onClose, project }) {
                     </a>
                   )}
 
-                  {/* GitHub Link */}
-                  <a
-                    href={project.githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    <FaGithub />
-                    View Code
-                  </a>
+                  {/* GitHub Link - Only show if githubLink exists */}
+                  {project.githubLink && (
+                    <a
+                      href={project.githubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      <FaGithub />
+                      View Code
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -90,17 +110,21 @@ function PortfolioModal({ isOpen, onClose, project }) {
           </>
         ) : (
           // Full-Screen Video Mode
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full min-h-[500px]">
             {/* Video taking up full screen */}
-            <video controls className="w-full h-full object-cover">
-              <source src={project.liveLink} type="video/mp4" />
+            <video 
+              controls 
+              className="w-full h-full object-contain bg-black"
+              autoPlay
+            >
+              <source src={project.videoSrc} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
 
             {/* Back Arrow to go back to the image view */}
             <button
               onClick={() => setVideoMode(false)}
-              className="absolute top-6 left-6 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300"
+              className="absolute top-6 left-6 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 z-10"
             >
               <FaArrowLeft />
             </button>
@@ -111,7 +135,7 @@ function PortfolioModal({ isOpen, onClose, project }) {
       {/* Close button for modal */}
       <button
         onClick={onClose}
-        className="absolute top-6 right-6 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300"
+        className="absolute top-6 right-6 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 z-10"
       >
         <FaTimes />
       </button>
