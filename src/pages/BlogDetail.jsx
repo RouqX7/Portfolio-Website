@@ -4,7 +4,7 @@ import { useTrail, animated } from 'react-spring';
 import { useInView } from 'react-intersection-observer';
 import { BlogService } from '../services/blogService';
 import { ProjectService } from '../services/projectService';
-import { FaArrowLeft, FaCalendar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaArrowLeft, FaCalendar, FaChevronLeft, FaChevronRight, FaTimes } from 'react-icons/fa';
 
 export default function BlogDetail() {
   const { blogId } = useParams();
@@ -13,6 +13,9 @@ export default function BlogDetail() {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [allImages, setAllImages] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,10 +29,21 @@ export default function BlogDetail() {
           const projectData = await ProjectService.getProject(blogData.projectId);
           setProject(projectData);
           
+          // Collect all images from all sections
+          const sortedSections = [...blogData.sections].sort((a, b) => a.order - b.order);
+          const images = [];
+          sortedSections.forEach((section) => {
+            if (section.photos && section.photos.length > 0) {
+              section.photos.forEach((photoUrl) => {
+                images.push(photoUrl);
+              });
+            }
+          });
+          setAllImages(images);
+          
           // Get page from URL params or default to 1
           const pageParam = searchParams.get('page');
           const page = pageParam ? parseInt(pageParam, 10) : 1;
-          const sortedSections = [...blogData.sections].sort((a, b) => a.order - b.order);
           const maxPage = Math.max(1, sortedSections.length);
           setCurrentPage(Math.min(Math.max(1, page), maxPage));
         }
@@ -114,6 +128,49 @@ export default function BlogDetail() {
     }
   };
 
+  const openImageModal = (imageUrl, imageIndex) => {
+    setSelectedImage(imageUrl);
+    setSelectedImageIndex(imageIndex);
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = 'unset'; // Restore scrolling
+  };
+
+  const navigateImage = (direction) => {
+    if (allImages.length === 0) return;
+    
+    let newIndex;
+    if (direction === 'next') {
+      newIndex = (selectedImageIndex + 1) % allImages.length;
+    } else {
+      newIndex = (selectedImageIndex - 1 + allImages.length) % allImages.length;
+    }
+    
+    setSelectedImageIndex(newIndex);
+    setSelectedImage(allImages[newIndex]);
+  };
+
+  // Handle keyboard events for image modal
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeImageModal();
+      } else if (e.key === 'ArrowLeft' && allImages.length > 1) {
+        navigateImage('prev');
+      } else if (e.key === 'ArrowRight' && allImages.length > 1) {
+        navigateImage('next');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage, selectedImageIndex, allImages]);
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
       <div className='max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12'>
@@ -170,19 +227,37 @@ export default function BlogDetail() {
             {currentSection.photos && currentSection.photos.length > 0 && (
               <div className='mt-6'>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  {currentSection.photos.map((photoUrl, photoIndex) => (
-                    <div
-                      key={photoIndex}
-                      className='relative group overflow-hidden rounded-lg bg-gray-200'
-                    >
-                      <img
-                        src={photoUrl}
-                        alt={currentSection.title ? `${currentSection.title} - Image ${photoIndex + 1}` : `Section image ${photoIndex + 1}`}
-                        className='w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300'
-                        loading='lazy'
-                      />
-                    </div>
-                  ))}
+                  {currentSection.photos.map((photoUrl, photoIndex) => {
+                    // Find the global index of this image in allImages
+                    const sortedSections = blog ? [...blog.sections].sort((a, b) => a.order - b.order) : [];
+                    let globalIndex = 0;
+                    for (let i = 0; i < currentPage - 1; i++) {
+                      if (sortedSections[i]?.photos) {
+                        globalIndex += sortedSections[i].photos.length;
+                      }
+                    }
+                    globalIndex += photoIndex;
+                    
+                    return (
+                      <div
+                        key={photoIndex}
+                        className='relative group overflow-hidden rounded-lg bg-gray-200 cursor-pointer'
+                        onClick={() => openImageModal(photoUrl, globalIndex)}
+                      >
+                        <img
+                          src={photoUrl}
+                          alt={currentSection.title ? `${currentSection.title} - Image ${photoIndex + 1}` : `Section image ${photoIndex + 1}`}
+                          className='w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300'
+                          loading='lazy'
+                        />
+                        <div className='absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center'>
+                          <div className='opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm font-medium bg-black bg-opacity-50 px-4 py-2 rounded-lg'>
+                            Click to view full size
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -266,6 +341,68 @@ export default function BlogDetail() {
           )}
         </div>
       </div>
+
+      {/* Image Modal/Lightbox */}
+      {selectedImage && (
+        <div
+          className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4'
+          onClick={closeImageModal}
+        >
+          {/* Close Button */}
+          <button
+            onClick={closeImageModal}
+            className='absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full p-3 hover:bg-opacity-70'
+            aria-label='Close image'
+          >
+            <FaTimes className='text-2xl' />
+          </button>
+
+          {/* Navigation Buttons */}
+          {allImages.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigateImage('prev');
+                }}
+                className='absolute left-4 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full p-3 hover:bg-opacity-70'
+                aria-label='Previous image'
+              >
+                <FaChevronLeft className='text-2xl' />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigateImage('next');
+                }}
+                className='absolute right-4 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full p-3 hover:bg-opacity-70'
+                aria-label='Next image'
+              >
+                <FaChevronRight className='text-2xl' />
+              </button>
+            </>
+          )}
+
+          {/* Image Counter */}
+          {allImages.length > 1 && (
+            <div className='absolute top-4 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 px-4 py-2 rounded-full text-sm font-medium z-10'>
+              {selectedImageIndex + 1} / {allImages.length}
+            </div>
+          )}
+
+          {/* Image */}
+          <div
+            className='max-w-7xl max-h-full flex items-center justify-center'
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedImage}
+              alt='Full size view'
+              className='max-w-full max-h-[90vh] object-contain rounded-lg'
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
