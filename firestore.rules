@@ -51,6 +51,12 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+
+    // Blogs collection - anyone can read, only admins can write
+    match /blogs/{blogId} {
+      allow read: if true;  // Public read for blog display
+      allow write: if isAdmin();
+    }
     
     // Everything else is admin-only
     match /{document=**} {

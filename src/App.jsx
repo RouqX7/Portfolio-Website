@@ -14,6 +14,8 @@ import Portfolio from './pages/portfolio';
 import Resume from './pages/Resume';
 import Contact from './pages/contact';
 import CVVideo from './pages/CVVideo';
+import Blogs from './pages/Blogs';
+import BlogDetail from './pages/BlogDetail';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/admin';
 
@@ -73,6 +75,10 @@ function App() {
 
         {/* CV Video Route */}
         <Route path="/cv-video" element={<CVVideo />} />
+
+        {/* Blog Routes */}
+        <Route path="/blogs" element={<><NavBar /><Blogs /></>} />
+        <Route path="/blogs/:blogId" element={<><NavBar /><BlogDetail /></>} />
       </Routes>
     </div>
   );

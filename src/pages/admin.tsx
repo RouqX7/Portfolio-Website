@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { FaHome, FaProjectDiagram, FaFileAlt, FaFilePdf, FaVideo, FaCog, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaProjectDiagram, FaFileAlt, FaFilePdf, FaVideo, FaCog, FaSignOutAlt, FaBars, FaTimes, FaBlog } from 'react-icons/fa';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -10,9 +10,10 @@ import ProjectsSection from '../components/admin/ProjectsSection';
 import ResumeSection from '../components/admin/ResumeSection';
 import CVSection from '../components/admin/CVSection';
 import CVVideoSection from '../components/admin/CVVideoSection';
+import BlogsSection from '../components/admin/BlogsSection';
 
 export default function AdminDashboard() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('projects');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -32,7 +33,7 @@ export default function AdminDashboard() {
           return;
         }
         
-        setUser(user);
+        setUser(user as any);
       } else {
         navigate('/admin/login');
       }
@@ -63,6 +64,8 @@ export default function AdminDashboard() {
         return <CVSection />;
       case 'cvVideo':
         return <CVVideoSection />;
+      case 'blogs':
+        return <BlogsSection />;
       case 'settings':
         return (
           <div className="p-6">
@@ -111,7 +114,7 @@ export default function AdminDashboard() {
             {/* Right side - User info and sign out */}
             <div className="flex items-center space-x-4">
               <div className="hidden md:block text-right">
-                <p className="text-sm font-medium text-gray-900">{user.email}</p>
+                <p className="text-sm font-medium text-gray-900">{user?.email}</p>
                 <p className="text-xs text-gray-500">Administrator</p>
               </div>
               <button
@@ -210,6 +213,21 @@ export default function AdminDashboard() {
           >
             <FaVideo />
             <span>CV Video</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveSection('blogs');
+              setSidebarOpen(false);
+            }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+              activeSection === 'blogs'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <FaBlog />
+            <span>Blogs</span>
           </button>
 
           <button
