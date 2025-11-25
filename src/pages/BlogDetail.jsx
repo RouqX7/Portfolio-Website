@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
-import { useTrail, animated } from 'react-spring';
-import { useInView } from 'react-intersection-observer';
 import { BlogService } from '../services/blogService';
 import { ProjectService } from '../services/projectService';
 import { FaArrowLeft, FaCalendar, FaChevronLeft, FaChevronRight, FaTimes } from 'react-icons/fa';
@@ -67,6 +65,29 @@ export default function BlogDetail() {
     }
   }, [currentPage, blog, setSearchParams]);
 
+  // Handle keyboard events for image modal - MUST be called before any early returns
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedImage(null);
+        document.body.style.overflow = 'unset';
+      } else if (e.key === 'ArrowLeft' && allImages.length > 1) {
+        const newIndex = (selectedImageIndex - 1 + allImages.length) % allImages.length;
+        setSelectedImageIndex(newIndex);
+        setSelectedImage(allImages[newIndex]);
+      } else if (e.key === 'ArrowRight' && allImages.length > 1) {
+        const newIndex = (selectedImageIndex + 1) % allImages.length;
+        setSelectedImageIndex(newIndex);
+        setSelectedImage(allImages[newIndex]);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage, selectedImageIndex, allImages]);
+
   const formatDate = (date) => {
     if (!date) return '';
     try {
@@ -77,18 +98,6 @@ export default function BlogDetail() {
       return '';
     }
   };
-
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const trailSections = useTrail(blog?.sections.length || 0, {
-    opacity: inView ? 1 : 0,
-    transform: inView ? 'translateY(0)' : 'translateY(30px)',
-    config: { mass: 1, tension: 80, friction: 26 },
-    delay: 200,
-  });
 
   if (loading) {
     return (
@@ -153,24 +162,6 @@ export default function BlogDetail() {
     setSelectedImage(allImages[newIndex]);
   };
 
-  // Handle keyboard events for image modal
-  useEffect(() => {
-    if (!selectedImage) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        closeImageModal();
-      } else if (e.key === 'ArrowLeft' && allImages.length > 1) {
-        navigateImage('prev');
-      } else if (e.key === 'ArrowRight' && allImages.length > 1) {
-        navigateImage('next');
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImage, selectedImageIndex, allImages]);
-
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
       <div className='max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12'>
@@ -184,15 +175,27 @@ export default function BlogDetail() {
         </Link>
 
         {/* Header */}
-        <div ref={ref} className='mb-12'>
+        <div className='mb-12'>
           <div className='mb-4'>
             <span className='text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full inline-block'>
               {project && project.title ? project.title : 'Project'}
             </span>
           </div>
-          <h1 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4 font-poppins'>
-            {blog.title}
-          </h1>
+          <div className='flex items-start justify-between gap-4 mb-4'>
+            <h1 className='text-4xl md:text-5xl font-bold text-gray-900 font-poppins flex-1'>
+              {blog.title}
+            </h1>
+            {/* Top Navigation - Next Button */}
+            {totalPages > 1 && currentPage < totalPages && (
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                className='flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:scale-105 whitespace-nowrap'
+              >
+                <span>Next</span>
+                <FaChevronRight />
+              </button>
+            )}
+          </div>
           {blog.createdAt && (
             <div className='flex items-center text-gray-600 text-sm'>
               <FaCalendar className='mr-2' />
@@ -203,23 +206,44 @@ export default function BlogDetail() {
 
         {/* Current Section */}
         {currentSection && (
-          <animated.div
-            style={trailSections[currentPage - 1] || {}}
-            className='bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8'
-          >
+          <div className='bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8'>
             {/* Section Title */}
             {currentSection.title && (
-              <h2 className='text-2xl md:text-3xl font-bold text-gray-900 mb-4 font-poppins'>
+              <h2 className='text-2xl md:text-3xl font-bold text-gray-900 mb-6 font-poppins'>
                 {currentSection.title}
               </h2>
             )}
 
-            {/* Section Text */}
-            {currentSection.text && (
+            {/* Backwards compatibility: Show old text field if no subsections */}
+            {(!currentSection.subsections || currentSection.subsections.length === 0) && currentSection.text && (
               <div className='prose prose-lg max-w-none mb-6'>
                 <p className='text-gray-700 leading-relaxed whitespace-pre-line font-poppins'>
-                  {currentSection.text}
+                  {currentSection.text} 
                 </p>
+              </div>
+            )}
+
+            {/* Subsections */}
+            {currentSection.subsections && currentSection.subsections.length > 0 && (
+              <div className='space-y-6 mb-6'>
+                {currentSection.subsections.map((subsection, subIndex) => (
+                  <div key={subsection.id || subIndex} className='space-y-3'>
+                    {/* Subsection Header (Bold) */}
+                    {subsection.title && (
+                      <h3 className='text-xl md:text-2xl font-bold text-gray-900 font-poppins'>
+                        {subsection.title}
+                      </h3>
+                    )}
+                    {/* Subsection Text */}
+                    {subsection.text && (
+                      <div className='prose prose-lg max-w-none'>
+                        <p className='text-gray-700 leading-relaxed whitespace-pre-line font-poppins'>
+                          {subsection.text}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
 
@@ -261,7 +285,7 @@ export default function BlogDetail() {
                 </div>
               </div>
             )}
-          </animated.div>
+          </div>
         )}
 
         {/* Pagination */}

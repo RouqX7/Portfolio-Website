@@ -58,8 +58,8 @@ export default function Blogs() {
   });
 
   const trailItems = [
-    <h1 key="heading" className='text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-800 via-blue-600 to-purple-600 bg-clip-text text-transparent text-center font-poppins'>Blogs</h1>,
-    <h2 key="subheading" className='text-xl md:text-2xl mt-4 text-gray-600 text-center font-poppins max-w-2xl mx-auto'>Project stories, insights, and development journeys</h2>,
+    <h1 key="heading" className='text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-800 via-blue-600 to-purple-600 bg-clip-text text-transparent text-center font-poppins'>Blogs</h1>,
+    <h2 key="subheading" className='text-lg md:text-xl mt-2 text-gray-600 text-center font-poppins max-w-2xl mx-auto'>Project stories, insights, and development journeys</h2>,
   ];
 
   const trailText = useTrail(trailItems.length, {
@@ -80,8 +80,8 @@ export default function Blogs() {
     return (
       <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
         <div className='text-center'>
-          <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4'></div>
-          <p className='text-xl text-gray-600 font-poppins'>Loading blogs...</p>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4'></div>
+          <p className='text-lg text-gray-600 font-poppins'>Loading blogs...</p>
         </div>
       </div>
     );
@@ -89,7 +89,7 @@ export default function Blogs() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'>
-      <div className='max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12'>
+      <div className='max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 md:py-16'>
         {/* Header */}
         <div ref={ref} className='text-center mb-12 md:mb-16'>
           {trailText.map((style, index) => (
@@ -101,8 +101,8 @@ export default function Blogs() {
 
         {/* Blogs Grid */}
         {blogs.length === 0 ? (
-          <div className='text-center py-20'>
-            <p className='text-xl text-gray-600 font-poppins'>No blogs available yet. Check back soon!</p>
+          <div className='text-center py-16'>
+            <p className='text-lg text-gray-600 font-poppins'>No blogs available yet. Check back soon!</p>
           </div>
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
@@ -119,7 +119,7 @@ export default function Blogs() {
                   >
                     {/* Image */}
                     {displayImage && (
-                      <div className='relative h-48 overflow-hidden bg-gray-200'>
+                      <div className='relative h-40 overflow-hidden bg-gray-200'>
                         <img
                           src={displayImage}
                           alt={blog.title}
@@ -130,7 +130,7 @@ export default function Blogs() {
                     )}
 
                     {/* Content */}
-                    <div className='p-6'>
+                    <div className='p-5'>
                       <div className='flex items-center justify-between mb-2'>
                         <span className='text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full'>
                           {getProjectTitle(blog.projectId)}

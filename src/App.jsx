@@ -41,14 +41,19 @@ function App() {
               <ScrollDownIndicator />
             </div>
 
-            {/* About Section */}
-            <div id="about" className="section min-h-screen">
-              <About />
-            </div>
-
             {/* Portfolio Section */}
             <div id="portfolio" className="section min-h-screen">
               <Portfolio />
+            </div>
+
+            {/* Blogs Section */}
+            <div id="blogs" className="section min-h-screen">
+              <Blogs />
+            </div>
+
+            {/* About Section */}
+            <div id="about" className="section min-h-screen">
+              <About />
             </div>
 
             {/* Resume Section */}
@@ -77,7 +82,6 @@ function App() {
         <Route path="/cv-video" element={<CVVideo />} />
 
         {/* Blog Routes */}
-        <Route path="/blogs" element={<><NavBar /><Blogs /></>} />
         <Route path="/blogs/:blogId" element={<><NavBar /><BlogDetail /></>} />
       </Routes>
     </div>

@@ -22,10 +22,18 @@ export class BlogService {
   
   static async createBlog(blogData: CreateBlogData): Promise<string> {
     const blogRef = doc(collection(db, BLOGS_COLLECTION));
-    // Generate IDs for sections
-    const sectionsWithIds: BlogSection[] = blogData.sections.map((section, index) => ({
-      id: `section-${Date.now()}-${index}`,
-      ...section
+    const timestamp = Date.now();
+    // Generate IDs for sections and subsections
+    const sectionsWithIds: BlogSection[] = blogData.sections.map((section, sectionIndex) => ({
+      id: `section-${timestamp}-${sectionIndex}`,
+      title: section.title,
+      photos: section.photos,
+      order: section.order,
+      subsections: section.subsections.map((subsection, subIndex) => ({
+        id: `subsection-${timestamp}-${sectionIndex}-${subIndex}`,
+        title: subsection.title,
+        text: subsection.text
+      }))
     }));
     
     const blogDoc = {
